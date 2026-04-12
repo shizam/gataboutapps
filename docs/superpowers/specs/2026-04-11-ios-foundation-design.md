@@ -42,6 +42,7 @@ gatabout/
 │       ├── FeedViewModel.swift
 │       └── EventCardView.swift
 └── Shared/
+    ├── Sizes.swift                    # Layout constants (spacing, padding, corner radii)
     └── LocationManager.swift          # CoreLocation wrapper
 ```
 
@@ -171,6 +172,10 @@ Each card in the feed shows:
 - Slots remaining / total slots
 - Organizer name
 - Fill mode indicator (approval required vs first come first served)
+
+## Layout Constants
+
+All spacing, padding, corner radius, and sizing values use named constants from a `Sizes` enum — no magic numbers in SwiftUI layout code. Example: `Sizes.padding16`, `Sizes.cornerRadius8`, `Sizes.iconSize24`. This keeps layouts consistent app-wide and makes spacing adjustments trivial.
 
 ## Error Handling
 
