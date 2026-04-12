@@ -35,6 +35,10 @@ enum Sizes {
     static let iconSize32: CGFloat = 32
     static let iconSize40: CGFloat = 40
 
+    // MARK: - Shadow
+    static let shadowRadius4: CGFloat = 4
+    static let shadowOffset2: CGFloat = 2
+
     // MARK: - Avatar Sizes
     static let avatarSmall: CGFloat = 32
     static let avatarMedium: CGFloat = 40

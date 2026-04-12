@@ -12,7 +12,7 @@ enum AuthState: Equatable {
 final class AuthService {
     private(set) var state: AuthState = .unknown
 
-    nonisolated(unsafe) private var handle: AuthStateDidChangeListenerHandle?
+    private var handle: AuthStateDidChangeListenerHandle?
     private var currentUser: FirebaseAuth.User?
 
     init() {
@@ -24,7 +24,7 @@ final class AuthService {
         }
     }
 
-    deinit {
+    isolated deinit {
         if let handle {
             Auth.auth().removeStateDidChangeListener(handle)
         }
@@ -42,10 +42,7 @@ final class AuthService {
         guard let user = currentUser else {
             throw AuthServiceError.notAuthenticated
         }
-        guard let token = try await user.getIDToken() as String? else {
-            throw AuthServiceError.notAuthenticated
-        }
-        return token
+        return try await user.getIDToken()
     }
 }
 

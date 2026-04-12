@@ -34,6 +34,7 @@ struct EventCardView: View {
             HStack(spacing: Sizes.spacing4) {
                 Image(systemName: "calendar")
                     .font(.system(size: Sizes.iconSize16))
+                    .accessibilityHidden(true)
                 Text(Self.formatDate(event.date))
                 if let time = event.time {
                     Text("at \(time)")
@@ -46,6 +47,7 @@ struct EventCardView: View {
             HStack(spacing: Sizes.spacing4) {
                 Image(systemName: "mappin")
                     .font(.system(size: Sizes.iconSize16))
+                    .accessibilityHidden(true)
                 if let location = event.location {
                     Text(location.name)
                         .lineLimit(1)
@@ -74,8 +76,8 @@ struct EventCardView: View {
         }
         .padding(Sizes.padding16)
         .background(.background)
-        .clipShape(RoundedRectangle(cornerRadius: Sizes.cornerRadius12))
-        .shadow(color: .black.opacity(0.08), radius: 4, y: 2)
+        .clipShape(.rect(cornerRadius: Sizes.cornerRadius12))
+        .shadow(color: .black.opacity(0.08), radius: Sizes.shadowRadius4, y: Sizes.shadowOffset2)
     }
 
     private static func formatDistance(_ miles: Double) -> String {

@@ -36,9 +36,7 @@ struct LoginView: View {
                     .multilineTextAlignment(.center)
             }
 
-            Button {
-                Task { await viewModel.signIn() }
-            } label: {
+            Button(action: signIn) {
                 Group {
                     if viewModel.isLoading {
                         ProgressView()
@@ -56,5 +54,9 @@ struct LoginView: View {
             Spacer()
         }
         .padding(.horizontal, Sizes.padding24)
+    }
+
+    private func signIn() {
+        Task { await viewModel.signIn() }
     }
 }

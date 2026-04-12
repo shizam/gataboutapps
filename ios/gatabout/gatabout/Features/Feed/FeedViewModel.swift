@@ -42,6 +42,8 @@ final class FeedViewModel {
             events = connection.edges
             endCursor = connection.pageInfo.endCursor
             hasMorePages = connection.pageInfo.hasNextPage
+        } catch is CancellationError {
+            // Normal — view disappeared. Do nothing.
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -64,6 +66,8 @@ final class FeedViewModel {
             events.append(contentsOf: connection.edges)
             endCursor = connection.pageInfo.endCursor
             hasMorePages = connection.pageInfo.hasNextPage
+        } catch is CancellationError {
+            // Normal — view disappeared. Do nothing.
         } catch {
             errorMessage = error.localizedDescription
         }
