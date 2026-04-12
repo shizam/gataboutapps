@@ -1,17 +1,32 @@
-//
-//  gataboutApp.swift
-//  gatabout
-//
-//  Created by Sam Nichols on 4/11/26.
-//
-
+import FirebaseCore
 import SwiftUI
 
 @main
-struct gataboutApp: App {
+struct GataboutApp: App {
+    private let authService: AuthService
+    private let graphQLClient: GraphQLClient
+    private let eventRepository: EventRepository
+    private let locationManager: LocationManager
+
+    init() {
+        FirebaseApp.configure()
+
+        let auth = AuthService()
+        let client = GraphQLClient(authService: auth)
+
+        self.authService = auth
+        self.graphQLClient = client
+        self.eventRepository = EventRepository(client: client)
+        self.locationManager = LocationManager()
+    }
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView(
+                authService: authService,
+                eventRepository: eventRepository,
+                locationManager: locationManager
+            )
         }
     }
 }
