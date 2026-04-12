@@ -112,6 +112,8 @@
 			);
 			name = gatabout;
 			packageProductDependencies = (
+				AC0000022F8B50000034CADD /* FirebaseAuth */,
+				AC0000032F8B50000034CADD /* FirebaseCore */,
 			);
 			productName = gatabout;
 			productReference = ACC453D22F8B41960034CADD /* gatabout.app */;
@@ -196,6 +198,9 @@
 			mainGroup = ACC453C92F8B41960034CADD;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
+			packageReferences = (
+				AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = ACC453D32F8B41960034CADD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -400,6 +405,7 @@
 				DEVELOPMENT_TEAM = LP44T8U46A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Gatabout needs your location to find events near you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -432,6 +438,7 @@
 				DEVELOPMENT_TEAM = LP44T8U46A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Gatabout needs your location to find events near you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -578,6 +585,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AC0000022F8B50000034CADD /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		AC0000032F8B50000034CADD /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = ACC453CA2F8B41960034CADD /* Project object */;
 }
