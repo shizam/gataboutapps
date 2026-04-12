@@ -19,10 +19,12 @@
 	<key>IS_ANALYTICS_ENABLED</key>
 	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<false></false>
 	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>FIREBASE_ANALYTICS_COLLECTION_DEACTIVATED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:237719277385:ios:54e66e2fa489eaea445498</string>
