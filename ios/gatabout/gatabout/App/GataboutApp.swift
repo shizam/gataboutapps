@@ -1,18 +1,29 @@
-import FirebaseCore
 import SwiftUI
 
 @main
 struct GataboutApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @State private var services = AppServices()
 
-    private let authService: AuthService
-    private let graphQLClient: GraphQLClient
-    private let eventRepository: EventRepository
-    private let locationManager: LocationManager
+    var body: some Scene {
+        WindowGroup {
+            RootView(
+                authService: services.authService,
+                eventRepository: services.eventRepository,
+                locationManager: services.locationManager
+            )
+        }
+    }
+}
+
+@MainActor
+final class AppServices {
+    let authService: AuthService
+    let graphQLClient: GraphQLClient
+    let eventRepository: EventRepository
+    let locationManager: LocationManager
 
     init() {
-        FirebaseApp.configure()
-
         let auth = AuthService()
         let client = GraphQLClient(authService: auth)
 
@@ -20,15 +31,5 @@ struct GataboutApp: App {
         self.graphQLClient = client
         self.eventRepository = EventRepository(client: client)
         self.locationManager = LocationManager()
-    }
-
-    var body: some Scene {
-        WindowGroup {
-            RootView(
-                authService: authService,
-                eventRepository: eventRepository,
-                locationManager: locationManager
-            )
-        }
     }
 }
