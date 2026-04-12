@@ -41,7 +41,9 @@ final class LoginViewModel {
     }
 
     private static func friendlyError(_ error: Error) -> String {
-        let code = AuthErrorCode(_nsError: error as NSError).code
+        guard let code = AuthErrorCode(rawValue: (error as NSError).code) else {
+            return error.localizedDescription
+        }
         switch code {
         case .invalidEmail:
             return "Invalid email address."

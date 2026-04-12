@@ -12,7 +12,7 @@ enum AuthState: Equatable {
 final class AuthService {
     private(set) var state: AuthState = .unknown
 
-    private var handle: AuthStateDidChangeListenerHandle?
+    nonisolated(unsafe) private var handle: AuthStateDidChangeListenerHandle?
     private var currentUser: FirebaseAuth.User?
 
     init() {

@@ -63,7 +63,7 @@ struct EventCardView: View {
                 Label("\(event.slotsRemaining)/\(event.totalSlots) spots",
                       systemImage: "person.2")
                     .font(.caption)
-                    .foregroundStyle(event.slotsRemaining > 0 ? .primary : .red)
+                    .foregroundStyle(event.slotsRemaining > 0 ? Color.primary : Color.red)
 
                 Spacer()
 
