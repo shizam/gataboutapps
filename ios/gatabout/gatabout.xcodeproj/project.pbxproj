@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		ACC454872F8B6ABD0034CADD /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AC0000022F8B50000034CADD /* FirebaseAuth */; };
+		ACC454882F8B6ABD0034CADD /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = AC0000032F8B50000034CADD /* FirebaseCore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACC454882F8B6ABD0034CADD /* FirebaseCore in Frameworks */,
 				ACC454872F8B6ABD0034CADD /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -118,6 +120,7 @@
 			name = gatabout;
 			packageProductDependencies = (
 				AC0000022F8B50000034CADD /* FirebaseAuth */,
+				AC0000032F8B50000034CADD /* FirebaseCore */,
 			);
 			productName = gatabout;
 			productReference = ACC453D22F8B41960034CADD /* gatabout.app */;
@@ -202,7 +205,7 @@
 			mainGroup = ACC453C92F8B41960034CADD;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk-xcframeworks" */,
+				AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = ACC453D32F8B41960034CADD /* Products */;
@@ -593,12 +596,12 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk-xcframeworks" */ = {
+		AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/akaffenberger/firebase-ios-sdk-xcframeworks";
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 12.0.0;
+				minimumVersion = 11.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -606,8 +609,13 @@
 /* Begin XCSwiftPackageProductDependency section */
 		AC0000022F8B50000034CADD /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk-xcframeworks" */;
+			package = AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAuth;
+		};
+		AC0000032F8B50000034CADD /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
