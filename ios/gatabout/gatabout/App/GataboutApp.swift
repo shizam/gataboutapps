@@ -3,6 +3,8 @@ import SwiftUI
 
 @main
 struct GataboutApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+
     private let authService: AuthService
     private let graphQLClient: GraphQLClient
     private let eventRepository: EventRepository

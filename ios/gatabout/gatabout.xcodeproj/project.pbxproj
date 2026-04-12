@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		ACC454872F8B6ABD0034CADD /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AC0000022F8B50000034CADD /* FirebaseAuth */; };
+		ACC454882F8B6ABD0034CADD /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = AC0000032F8B50000034CADD /* FirebaseCore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		ACC453E02F8B41970034CADD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +57,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ACC454882F8B6ABD0034CADD /* FirebaseCore in Frameworks */,
+				ACC454872F8B6ABD0034CADD /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -197,10 +204,10 @@
 			);
 			mainGroup = ACC453C92F8B41960034CADD;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 77;
 			packageReferences = (
 				AC0000012F8B50000034CADD /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
+			preferredProjectObjectVersion = 77;
 			productRefGroup = ACC453D32F8B41960034CADD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -405,6 +412,7 @@
 				DEVELOPMENT_TEAM = LP44T8U46A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_FirebaseAppDelegateProxyEnabled = NO;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Gatabout needs your location to find events near you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -438,6 +446,7 @@
 				DEVELOPMENT_TEAM = LP44T8U46A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_FirebaseAppDelegateProxyEnabled = NO;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Gatabout needs your location to find events near you.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
