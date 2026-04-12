@@ -4,13 +4,22 @@ Read `docs/PROJECT-STATUS.md` before doing anything. It has the full architectur
 
 ## Project
 
-- iOS app for the lfourg social coordination platform
+- iOS app for the lfourg (gatabout) social coordination platform
 - Contract/spec: `../lfourg/contract/`
-- Must use `ios/gatabout/gatabout.xcworkspace` (CocoaPods), NOT `.xcodeproj`
-- Build: `xcodebuild -workspace gatabout.xcworkspace -scheme gatabout -destination 'generic/platform=iOS Simulator' build`
+- Must use `gatabout/gatabout.xcworkspace` (CocoaPods), NOT `.xcodeproj`
+- Build: `cd gatabout && xcodebuild build -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 17'`
+- Tests: `cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:gataboutTests -disable-concurrent-destination-testing`
 
 ## Code Style
 
 - All spacing/padding/sizing in SwiftUI uses `Sizes.*` constants — no magic numbers
-- MVVM with explicit init injection — no singletons, no DI container, no @Environment
-- Use Swift skills (`swift-concurrency-pro`, `swiftui-pro`) when writing or reviewing Swift code
+- Semantic colors via `AppColors.*` — no raw Color literals
+- MVVM with @Observable ViewModels and Repositories
+- Repositories shared via SwiftUI `.environment()`, ViewModels via explicit init injection
+- Use Swift skills (`swift-concurrency-pro`, `swiftui-pro`, `swift-testing-pro`) when writing or reviewing Swift code
+
+## Dependencies
+
+- **CocoaPods** only, not SPM (user preference)
+- **Minimum Firebase deps** — only `FirebaseAuth`, no Analytics/Crashlytics/etc
+- Everything else through custom GraphQL networking over URLSession

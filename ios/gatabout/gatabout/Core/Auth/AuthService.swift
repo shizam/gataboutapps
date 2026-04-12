@@ -1,30 +1,17 @@
 import FirebaseAuth
-import Observation
-
-enum AuthState: Equatable {
-    case unknown
-    case loggedOut
-    case loggedIn
-}
 
 @Observable
-@MainActor
-final class AuthService {
-    private(set) var state: AuthState = .unknown
-
+final class AuthService: AuthServiceProtocol {
+    private(set) var authState: AuthState = .unknown
     private var handle: AuthStateDidChangeListenerHandle?
-    private var currentUser: FirebaseAuth.User?
 
     init() {
         handle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            Task { @MainActor in
-                self?.currentUser = user
-                self?.state = user != nil ? .loggedIn : .loggedOut
-            }
+            self?.authState = user != nil ? .signedIn : .signedOut
         }
     }
 
-    isolated deinit {
+    deinit {
         if let handle {
             Auth.auth().removeStateDidChangeListener(handle)
         }
@@ -34,25 +21,22 @@ final class AuthService {
         try await Auth.auth().signIn(withEmail: email, password: password)
     }
 
+    func signUp(email: String, password: String) async throws {
+        try await Auth.auth().createUser(withEmail: email, password: password)
+    }
+
     func signOut() throws {
         try Auth.auth().signOut()
     }
 
-    func getIDToken() async throws -> String {
-        guard let user = currentUser else {
-            throw AuthServiceError.notAuthenticated
+    func resetPassword(email: String) async throws {
+        try await Auth.auth().sendPasswordReset(withEmail: email)
+    }
+
+    func getToken() async throws -> String {
+        guard let user = Auth.auth().currentUser else {
+            throw AppError.unauthorized
         }
         return try await user.getIDToken()
-    }
-}
-
-enum AuthServiceError: Error, LocalizedError {
-    case notAuthenticated
-
-    var errorDescription: String? {
-        switch self {
-        case .notAuthenticated:
-            return "Not signed in"
-        }
     }
 }

@@ -1,81 +1,47 @@
+import Foundation
 import CoreLocation
-import Observation
 
 @Observable
-@MainActor
 final class FeedViewModel {
-    private(set) var events: [EventEdge] = []
-    private(set) var isLoading = false
-    private(set) var isLoadingMore = false
-    private(set) var errorMessage: String?
-    private(set) var hasMorePages = false
+    var errorMessage: String?
+    var testLocation: (lat: Double, lng: Double)?
 
     private let eventRepository: EventRepository
-    private let locationManager: LocationManager
-    private var endCursor: String?
+    private let locationService: LocationService
 
-    init(eventRepository: EventRepository, locationManager: LocationManager) {
+    var feedEvents: [Event] { eventRepository.feedEventIds.compactMap { eventRepository.event(for: $0) } }
+    var isLoading: Bool { eventRepository.isLoadingFeed }
+    var hasNextPage: Bool { eventRepository.feedPageInfo?.hasNextPage ?? false }
+    var needsLocationPermission: Bool { locationService.needsPermissionRequest }
+    var locationDenied: Bool { locationService.authorizationStatus == .denied }
+
+    init(eventRepository: EventRepository, locationService: LocationService) {
         self.eventRepository = eventRepository
-        self.locationManager = locationManager
+        self.locationService = locationService
     }
+
+    func requestLocationPermission() { locationService.requestPermission() }
 
     func loadFeed() async {
-        guard let location = locationManager.currentLocation else {
-            if locationManager.needsPermissionRequest {
-                locationManager.requestPermission()
-            } else if locationManager.hasPermission {
-                locationManager.requestLocation()
-            } else {
-                errorMessage = "Location access is required to find events near you. Please enable it in Settings."
-            }
+        errorMessage = nil
+        guard let location = resolveLocation() else {
+            if !locationService.needsPermissionRequest { locationService.requestLocation() }
             return
         }
-
-        isLoading = true
-        errorMessage = nil
-
-        do {
-            let connection = try await eventRepository.feed(
-                lat: location.latitude,
-                lng: location.longitude
-            )
-            events = connection.edges
-            endCursor = connection.pageInfo.endCursor
-            hasMorePages = connection.pageInfo.hasNextPage
-        } catch is CancellationError {
-            // Normal — view disappeared. Do nothing.
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-
-        isLoading = false
+        do { try await eventRepository.fetchFeed(lat: location.lat, lng: location.lng) }
+        catch { errorMessage = error.localizedDescription }
     }
 
-    func loadMore() async {
-        guard hasMorePages, !isLoadingMore, let cursor = endCursor,
-              let location = locationManager.currentLocation else { return }
-
-        isLoadingMore = true
-
-        do {
-            let connection = try await eventRepository.feed(
-                lat: location.latitude,
-                lng: location.longitude,
-                cursor: cursor
-            )
-            events.append(contentsOf: connection.edges)
-            endCursor = connection.pageInfo.endCursor
-            hasMorePages = connection.pageInfo.hasNextPage
-        } catch is CancellationError {
-            // Normal — view disappeared. Do nothing.
-        } catch {
-            errorMessage = error.localizedDescription
-        }
-
-        isLoadingMore = false
+    func loadNextPage() async {
+        guard let cursor = eventRepository.feedPageInfo?.endCursor,
+              let location = resolveLocation() else { return }
+        do { try await eventRepository.fetchFeed(lat: location.lat, lng: location.lng, cursor: cursor) }
+        catch { errorMessage = error.localizedDescription }
     }
 
-    func retry() async {
-        await loadFeed()
+    private func resolveLocation() -> (lat: Double, lng: Double)? {
+        if let test = testLocation { return test }
+        guard let coord = locationService.currentLocation else { return nil }
+        return (coord.latitude, coord.longitude)
     }
 }

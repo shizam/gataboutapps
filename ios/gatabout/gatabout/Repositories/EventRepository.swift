@@ -1,89 +1,36 @@
 import Foundation
 
+@Observable
 final class EventRepository {
+    private(set) var events: [String: Event] = [:]
+    private(set) var feedEventIds: [String] = []
+    private(set) var feedPageInfo: PageInfo?
+    private(set) var isLoadingFeed = false
     private let client: GraphQLClient
 
-    init(client: GraphQLClient) {
-        self.client = client
+    init(client: GraphQLClient) { self.client = client }
+
+    func fetchFeed(lat: Double, lng: Double, cursor: String? = nil) async throws {
+        isLoadingFeed = true
+        defer { isLoadingFeed = false }
+        let variables = EventQueries.FeedVariables(
+            location: EventQueries.LocationInput(lat: lat, lng: lng), cursor: cursor, limit: 20)
+        let response: EventQueries.FeedResponse = try await client.execute(
+            query: EventQueries.feed, variables: variables)
+        for edge in response.feed.edges { events[edge.node.id] = edge.node }
+        let newIds = response.feed.edges.map(\.node.id)
+        if cursor == nil { feedEventIds = newIds } else { feedEventIds.append(contentsOf: newIds) }
+        feedPageInfo = response.feed.pageInfo
     }
 
-    func feed(
-        lat: Double,
-        lng: Double,
-        radius: Double = 10,
-        cursor: String? = nil,
-        limit: Int = 20
-    ) async throws -> EventConnection {
-        var variables: [String: Any] = [
-            "location": ["lat": lat, "lng": lng],
-            "radius": radius,
-            "limit": limit
-        ]
-        if let cursor {
-            variables["cursor"] = cursor
-        }
-
-        let response = try await client.execute(
-            query: Self.feedQuery,
-            variables: variables,
-            as: FeedResponse.self
-        )
-        return response.feed
+    func fetchEvent(id: String) async throws -> Event {
+        if let cached = events[id] { return cached }
+        let response: EventQueries.EventDetailResponse = try await client.execute(
+            query: EventQueries.event, variables: EventQueries.EventVariables(id: id))
+        guard let event = response.event else { throw AppError.graphQL(["Event not found"]) }
+        events[id] = event
+        return event
     }
-}
 
-// MARK: - Response wrappers
-
-private extension EventRepository {
-    struct FeedResponse: Decodable {
-        let feed: EventConnection
-    }
-}
-
-// MARK: - Queries
-
-private extension EventRepository {
-    static let feedQuery = """
-        query Feed($location: LocationInput!, $radius: Float, $cursor: String, $limit: Int) {
-          feed(location: $location, radius: $radius, cursor: $cursor, limit: $limit) {
-            edges {
-              node {
-                id
-                title
-                description
-                category
-                date
-                time
-                duration
-                status
-                totalSlots
-                slotsRemaining
-                fillMode
-                visibility
-                location {
-                  name
-                  address
-                  lat
-                  lng
-                  radius
-                }
-                organizer {
-                  id
-                  displayName
-                  photoURL
-                }
-                myParticipantStatus
-              }
-              cursor
-              distance
-              score
-            }
-            pageInfo {
-              hasNextPage
-              endCursor
-            }
-            totalCount
-          }
-        }
-        """
+    func event(for id: String) -> Event? { events[id] }
 }

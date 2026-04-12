@@ -8,142 +8,196 @@ iOS app for the lfourg social coordination platform. Users create location-based
 
 ## Architecture
 
-**MVVM** with explicit dependency injection. No singletons, no DI container.
+**MVVM with repository pattern.** Repositories are `@Observable` and shared via SwiftUI `.environment()`. ViewModels are screen-scoped, created with explicit init injection.
 
 ```
 Views (SwiftUI) → ViewModels (@Observable) → Repositories → GraphQLClient (URLSession)
                                                            → AuthService (Firebase Auth)
 ```
 
-**Key decision:** Firebase Auth SDK for token minting only. Everything else goes through our custom GraphQL networking layer (URLSession). No Apollo, no Firebase Firestore SDK yet.
+**Key decisions:**
+- Firebase Auth SDK for token minting only. Everything else goes through our custom GraphQL networking layer (URLSession). No Apollo.
+- No Firebase Firestore/Analytics/Crashlytics SDKs — minimum dependencies only.
+- Chat/notifications deferred (will require Firestore SDK decision later).
 
 **Project settings:**
-- iOS 26.4 deployment target
-- `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor` (everything is implicitly @MainActor)
-- `SWIFT_APPROACHABLE_CONCURRENCY = YES`
-- Firebase via **CocoaPods** (not SPM — switched due to SPM build/startup issues)
+- iOS 26.0+ deployment target, Xcode 26.4
+- Swift 6.2 with default MainActor isolation (everything implicitly `@MainActor`)
+- Approachable concurrency enabled
+- Firebase via **CocoaPods** (not SPM — user preference)
 - Must use `gatabout.xcworkspace` (not .xcodeproj) due to CocoaPods
 
-## What's Built (Milestone 1: Sign In + Feed)
+## What's Built (Milestones 1 & 2: Auth + Feed)
 
-### Files
+### File Structure
 
 ```
-ios/gatabout/gatabout/
+gatabout/gatabout/
 ├── App/
-│   ├── AppConfig.swift              # GraphQL URL (https://lfourg-a6fe3.web.app/graphql)
-│   ├── AppDelegate.swift            # UIApplicationDelegate, calls FirebaseApp.configure()
-│   ├── GataboutApp.swift            # @main, creates AppServices lazily via .task
-│   └── RootView.swift               # Auth-gated navigation: unknown→loading, loggedOut→login, loggedIn→feed
+│   ├── gataboutApp.swift           # @main, FirebaseApp.configure(), DI setup via .environment()
+│   ├── RootView.swift              # Auth-gated: unknown→ProgressView, signedOut→Login, signedIn→Tabs
+│   └── MainTabView.swift           # TabView with Feed + Profile tabs
 ├── Core/
 │   ├── Auth/
-│   │   └── AuthService.swift        # Firebase Auth wrapper, publishes AuthState, provides ID tokens
-│   └── Network/
-│       ├── GraphQLClient.swift      # URLSession POST to /graphql, Bearer token injection, Codable decoding
-│       └── GraphQLError.swift       # Typed error enum (network, http, decoding, graphQL, unauthenticated)
+│   │   ├── AuthService.swift       # Firebase Auth wrapper, @Observable, AuthState listener
+│   │   ├── AuthServiceProtocol.swift  # Protocol for testability
+│   │   └── AuthState.swift         # .unknown, .signedIn, .signedOut
+│   ├── Networking/
+│   │   ├── GraphQLClient.swift     # URLSession POST to /graphql, Bearer token injection
+│   │   └── AppError.swift          # .network, .unauthorized, .graphQL, .decoding
+│   ├── Theme/
+│   │   ├── Sizes.swift             # All layout constants (spacing, corner radii, icons, avatars)
+│   │   ├── AppColors.swift         # Semantic colors (primary, error, cardBackground, etc.)
+│   │   └── AppTypography.swift     # ViewModifier-based text styles
+│   └── Location/
+│       └── LocationService.swift   # CoreLocation wrapper, @Observable permission + coords
 ├── Models/
-│   ├── User.swift                   # Partial user (id, displayName, photoURL)
-│   ├── Event.swift                  # Event + EventLocation + all enums (ActivityCategory, EventStatus, etc.)
-│   └── Feed.swift                   # EventConnection, EventEdge, PageInfo, FeedSort
+│   ├── User.swift                  # Most fields optional (GraphQL partial responses)
+│   ├── Event.swift                 # Full event with organizer, location, participants
+│   ├── EventLocation.swift         # Name, address, lat/lng, radius, placeId
+│   ├── EventParticipant.swift      # User + status + slotType
+│   ├── Venue.swift                 # Google Places venue + VenuePhoto
+│   ├── EventConnection.swift       # Pagination wrapper: edges, pageInfo
+│   ├── Trait.swift                 # Name + tier (NORMAL/PROMINENT)
+│   ├── Badge.swift                 # Achievement records
+│   └── Enums/
+│       ├── ActivityCategory.swift  # 14 categories with displayName + systemImage
+│       ├── EventStatus.swift       # OPEN, FULL, IN_PROGRESS, COMPLETED, CANCELLED
+│       ├── ParticipantStatus.swift # INVITED, REQUESTED, CONFIRMED, etc.
+│       ├── FillMode.swift          # FIRST_COME_FIRST_SERVED, APPROVAL_REQUIRED
+│       ├── Visibility.swift        # PUBLIC, FRIENDS_ONLY
+│       ├── SlotType.swift          # ORGANIZER, FRIEND, OPEN
+│       ├── FeedSort.swift          # SCORE, DATE, DISTANCE
+│       └── Gender.swift            # MALE, FEMALE, NON_BINARY, PREFER_NOT_TO_SAY
 ├── Repositories/
-│   └── EventRepository.swift        # feed() query with pagination
+│   ├── UserRepository.swift        # @Observable, caches users[id], currentUser
+│   ├── UserQueries.swift           # `me`, `user(id:)`, `createProfile` queries + response/variable types
+│   ├── EventRepository.swift       # @Observable, feed pagination, event cache
+│   └── EventQueries.swift          # `feed`, `event(id:)` queries + types
 ├── Features/
-│   ├── Auth/
-│   │   ├── LoginView.swift          # Email/password sign-in form
-│   │   └── LoginViewModel.swift     # Sign-in logic, Firebase error mapping
-│   └── Feed/
-│       ├── EventCardView.swift      # Single event card (category, title, date, location, slots, organizer)
-│       ├── EventListView.swift      # Scrollable list with pagination
-│       ├── FeedView.swift           # Main feed screen with loading/error/empty states
-│       └── FeedViewModel.swift      # Feed loading, pagination, location handling
-└── Shared/
-    ├── EmptyStateView.swift         # Reusable empty state (icon + title + message)
-    ├── ErrorStateView.swift         # Reusable error state (icon + message + retry)
-    ├── LocationManager.swift        # CoreLocation wrapper, permission handling
-    └── Sizes.swift                  # Layout constants (padding, spacing, corners, icons, shadows)
+│   ├── Login/
+│   │   ├── LoginView.swift         # Email/password form + links to SignUp/ForgotPassword
+│   │   ├── LoginViewModel.swift    # signIn → fetchCurrentUser
+│   │   ├── SignUpView.swift        # DisplayName + email + password form
+│   │   ├── SignUpViewModel.swift   # signUp → createProfile
+│   │   ├── ForgotPasswordView.swift # Email form, success confirmation
+│   │   └── ForgotPasswordViewModel.swift
+│   ├── Feed/
+│   │   ├── FeedView.swift          # Location permission states, list, empty/denied states
+│   │   ├── FeedViewModel.swift     # loadFeed, loadNextPage, location resolution
+│   │   └── EventCardView.swift     # Category badge, title, venue, date, slots indicator
+│   ├── EventDetail/
+│   │   ├── EventDetailView.swift   # Read-only event display, status pill, participants list
+│   │   └── EventDetailViewModel.swift # Reads from EventRepository cache, fetches if missing
+│   └── Profile/
+│       └── ProfileView.swift       # Placeholder: display name + sign out button
+└── Extensions/
+    └── Date+Extensions.swift       # String.toDate (ISO 8601), Date.shortDisplay, relativeDisplay
 ```
+
+### Tests
+
+20 unit tests across 6 suites, all passing:
+- `GraphQLClientTests` (4) — success decoding, GraphQL errors, 401, auth header
+- `ModelDecodingTests` (5) — User/Event/EventConnection JSON decoding, ISO 8601 parsing
+- `UserRepositoryTests` (3) — fetch + cache, cache hit, createProfile
+- `EventRepositoryTests` (3) — feed population, pagination append, event caching
+- `LoginViewModelTests` (3) — signIn success, signIn failure, validation
+- `FeedViewModelTests` (2) — loadFeed success, loadFeed error
+
+Test helpers in `gataboutTests/Helpers/`:
+- `MockURLProtocol` (and per-suite variants to avoid cross-suite state collision)
+- `MockAuthService` (conforms to `AuthServiceProtocol`)
+- `TestHelpers.swift` (`makeTestClient`, `mockResponse`)
 
 ### Dependency Flow
 
 ```
-AppDelegate
-  └── FirebaseApp.configure()
+gataboutApp (init)
+  ├── FirebaseApp.configure()
+  └── Create services:
+        ├── AuthService (Firebase Auth state listener)
+        ├── GraphQLClient(getToken: authService.getToken)
+        ├── UserRepository(client:)
+        ├── EventRepository(client:)
+        └── LocationService (CoreLocation)
+             All injected via .environment()
 
-GataboutApp (deferred via .task)
-  └── AppServices
-        ├── AuthService (Firebase Auth)
-        ├── GraphQLClient (needs AuthService for tokens)
-        ├── EventRepository (needs GraphQLClient)
-        └── LocationManager (CoreLocation)
-
-RootView (observes AuthService.state)
-  ├── .loggedOut → LoginView(authService:)
-  │                 └── LoginViewModel(authService:)
-  └── .loggedIn  → FeedView(eventRepository:, locationManager:)
-                    └── FeedViewModel(eventRepository:, locationManager:)
+RootView (observes authService.authState)
+  ├── .signedOut → LoginView(authService:, userRepository:)
+  └── .signedIn  → MainTabView
+                   ├── FeedView(eventRepository:, locationService:)
+                   │    └── navigationDestination → EventDetailView(eventId:, eventRepository:)
+                   └── ProfileView (pulls services from @Environment)
 ```
 
-## Current State: NEEDS TESTING
+## Current State: NEEDS MANUAL TESTING
 
-The app builds successfully (`BUILD SUCCEEDED`). It has NOT been fully tested in the simulator yet. The login flow and feed display need manual verification.
-
-### Known Issues
-
-1. **Simulator startup is slow (~30-60s)** — This is LLDB debugger overhead attaching to Firebase's Obj-C runtime, NOT our code. Our init completes in ~20ms, auth state resolves in ~300ms. On a real device in release mode it will be fast. No fix available — this is a known Firebase + LLDB issue.
-
-2. **"Couldn't find the Objective-C runtime library" log** — LLDB debugger warning, harmless. Appears in simulator, not a real error.
-
-3. **GoogleUtilities swizzler warning may still appear** — We've added `GoogleUtilitiesAppDelegateProxyEnabled = NO` and `FirebaseAppDelegateProxyEnabled = NO` to Info.plist keys, and moved `FirebaseApp.configure()` to `AppDelegate.didFinishLaunchingWithOptions`. If the warning still shows, it's a timing issue with SwiftUI's delegate registration — functionally harmless.
-
-4. **SourceKit diagnostics show false errors** — "Cannot find type in scope", "No such module 'FirebaseAuth'" etc. These are SourceKit/LSP issues because it can't resolve CocoaPods modules. The project builds fine in Xcode. Building the project (Cmd+B) updates the index and clears most of these.
+The app builds successfully (`** BUILD SUCCEEDED **`) and all 20 unit tests pass. It has NOT been manually verified in the simulator yet.
 
 ### What Hasn't Been Tested Yet
 
-- [ ] Sign in with valid credentials → transitions to feed
-- [ ] Sign in with invalid credentials → shows error message
-- [ ] Feed loads events from the GraphQL API
-- [ ] Location permission prompt appears
-- [ ] Feed shows empty state when no events nearby
-- [ ] Pull-to-refresh works
+- [ ] App launches → shows login screen
+- [ ] Sign up with new account → creates profile → transitions to feed
+- [ ] Sign in with existing credentials → transitions to feed
+- [ ] Sign in with wrong password → shows error message
+- [ ] Forgot password → sends reset email
+- [ ] Feed requests location permission on first load
+- [ ] Feed loads events from the live GraphQL API
+- [ ] Tap event card → EventDetailView pushes with full event info
 - [ ] Pagination (scroll to bottom loads more)
-- [ ] Sign out (not implemented in UI yet — no button)
+- [ ] Profile tab shows display name
+- [ ] Sign out → returns to login screen
+- [ ] Auto-login on relaunch (Firebase persists session)
+
+### Known Issues / Non-Issues
+
+1. **SourceKit IDE diagnostics show false errors** — "Cannot find type in scope", "No such module 'FirebaseAuth'", etc. These appear because SourceKit can't always resolve CocoaPods modules without workspace context. The project builds fine with `xcodebuild`. Trust the build output, not IDE diagnostics.
+
+2. **Simulator launches on every test run** — Unavoidable when running `xcodebuild test`. Use `-disable-concurrent-destination-testing` to avoid launching multiple simulators.
+
+3. **Per-suite mock URL protocols** — Tests use separate URLProtocol subclasses per suite (`MockURLProtocol`, `RepoMockURLProtocol`, `EventMockURLProtocol`, `LoginMockURLProtocol`, `FeedMockURLProtocol`) because Swift Testing runs suites concurrently and a shared static `requestHandler` causes flaky tests.
 
 ## What's Deferred (Future Milestones)
 
-- Sign up / account creation
-- Profile creation (createProfile onboarding)
-- Event detail screen
-- Event creation
-- Chat (requires Firestore SDK — will add later)
-- Notifications (requires Firestore SDK — will add later)
-- Friends, ratings, reporting
-- Map view (Apple MapKit)
-- Image upload / avatars (requires Firebase Storage SDK)
-- Caching / offline support
-- Deep linking
-- Search / filter UI (categories, radius, sort)
+### Immediate next candidates
+- Event creation (Create Event form + mutation)
+- Join/leave events (requestToJoin, respondToRequest, leaveEvent mutations)
+- Profile editing (updateProfile, avatar upload)
+- Category/date/radius filters on feed
+- Pull-to-refresh on feed
+- Map view of feed events
+
+### Requires Firestore SDK decision
+- Chat (event group chats, 1:1 DMs, multi-person DMs) — Firestore `onSnapshot` listeners
+- Notification center — Firestore real-time listener
+- When we add these, decide: add Firestore SDK (simplest) vs. build custom WebSocket layer (more work, avoids another Firebase dep)
+
+### Larger features
+- Friends system (send/respond/remove friend requests, mutual friends)
+- Ratings & reputation (post-event rating wizard, trait tags, badges)
+- Reporting & blocking (submit reports, block users)
+- Waitlist / friend-reserved slots
+- Event invitations
 
 ## Backend Context
 
 - Firebase project: `lfourg-a6fe3`
 - GraphQL endpoint: `https://lfourg-a6fe3.web.app/graphql`
 - Auth: Firebase Auth, email/password only (no OAuth in v1)
-- Chat: Firestore-native (NOT GraphQL) — direct `onSnapshot` listeners
+- Chat: Firestore-native (NOT GraphQL) — direct `onSnapshot` listeners when we build it
 - Notifications: Firestore-native, in-app only (no FCM push in v1)
 - Full contract/spec: `../lfourg/contract/`
 - Schema: `../lfourg/contract/schema.graphql`
 
-## Code Quality
+## Design Docs
 
-Reviewed against:
-- **swift-concurrency-pro** — `isolated deinit`, CancellationError handling, proper @MainActor usage
-- **swiftui-pro** — Modern APIs (.clipShape(.rect), foregroundStyle), extracted sub-views, accessibility (decorative images hidden from VoiceOver), Sizes constants for all layout values
+- Spec: `docs/superpowers/specs/2026-04-12-ios-architecture-design.md`
+- Plan: `docs/superpowers/plans/2026-04-12-ios-auth-and-feed.md`
 
-## Skills Available
+## Skills to Use
 
-These skills are installed and should be used when writing/reviewing Swift code:
-- `swift-concurrency-pro` (~/.claude/skills/) — Swift 6.2 concurrency correctness
-- `swiftui-pro` (~/.claude/skills/) — SwiftUI best practices, modern APIs
-- `swift-testing-pro` (~/.claude/skills/) — Swift Testing framework
-- `swiftui-pro` (.agents/skills/) — Also in project (Paul Hudson's version)
-- `axiom-swift-concurrency` (Axiom plugin) — Additional concurrency patterns
+When writing or reviewing Swift code, invoke:
+- `swiftui-pro` — SwiftUI best practices, modern iOS 26 APIs
+- `swift-concurrency-pro` — Swift 6.2 concurrency correctness
+- `swift-testing-pro` — Swift Testing framework

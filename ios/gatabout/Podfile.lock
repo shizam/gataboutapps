@@ -44,7 +44,6 @@ PODS:
 
 DEPENDENCIES:
   - FirebaseAuth (~> 11.0)
-  - FirebaseCore (~> 11.0)
 
 SPEC REPOS:
   trunk:
@@ -69,6 +68,6 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: fc75fc972958dceedee61cb662ae1da7a83a91cf
   RecaptchaInterop: 11e0b637842dfb48308d242afc3f448062325aba
 
-PODFILE CHECKSUM: f842c28e70117c5e260a3a7e5403fce2d0f7e423
+PODFILE CHECKSUM: c76d24406392213b50bd2d309cb232414fb8fa47
 
 COCOAPODS: 1.16.2

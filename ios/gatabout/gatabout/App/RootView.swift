@@ -1,24 +1,24 @@
 import SwiftUI
 
 struct RootView: View {
-    let authService: AuthService
-    let eventRepository: EventRepository
-    let locationManager: LocationManager
+    @Environment(AuthService.self) private var authService
+    @Environment(UserRepository.self) private var userRepository
 
     var body: some View {
-        Group {
-            switch authService.state {
-            case .unknown:
-                ProgressView()
-            case .loggedOut:
-                LoginView(authService: authService)
-            case .loggedIn:
-                FeedView(
-                    eventRepository: eventRepository,
-                    locationManager: locationManager
-                )
+        switch authService.authState {
+        case .unknown:
+            ProgressView("Loading...")
+        case .signedOut:
+            NavigationStack {
+                LoginView(authService: authService, userRepository: userRepository)
             }
+        case .signedIn:
+            MainTabView()
+                .task {
+                    if userRepository.currentUser == nil {
+                        try? await userRepository.fetchCurrentUser()
+                    }
+                }
         }
-        .animation(.default, value: authService.state)
     }
 }

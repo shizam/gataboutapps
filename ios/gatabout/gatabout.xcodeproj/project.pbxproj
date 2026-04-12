@@ -7,76 +7,75 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D2CA45CA5C42A82ED491C2BB /* Pods_gatabout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F8FC975CA89E806D9730C15 /* Pods_gatabout.framework */; };
+		3D634909EA89F1CA115BFC82 /* Pods_gataboutTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD31E7BC9E5F025530B17F17 /* Pods_gataboutTests.framework */; };
+		D3CCE4E788147A488F27F179 /* Pods_gatabout.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E850599B4D7B88448472A9AF /* Pods_gatabout.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		ACC453E02F8B41970034CADD /* PBXContainerItemProxy */ = {
+		ACF642512F8C0A7F00BE4CCB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = ACC453CA2F8B41960034CADD /* Project object */;
+			containerPortal = ACF6423B2F8C0A7E00BE4CCB /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = ACC453D12F8B41960034CADD;
+			remoteGlobalIDString = ACF642422F8C0A7E00BE4CCB;
 			remoteInfo = gatabout;
 		};
-		ACC453EA2F8B41970034CADD /* PBXContainerItemProxy */ = {
+		ACF6425B2F8C0A7F00BE4CCB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = ACC453CA2F8B41960034CADD /* Project object */;
+			containerPortal = ACF6423B2F8C0A7E00BE4CCB /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = ACC453D12F8B41960034CADD;
+			remoteGlobalIDString = ACF642422F8C0A7E00BE4CCB;
 			remoteInfo = gatabout;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4A821E9C26E683CD6534ADBA /* Pods-gatabout.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gatabout.release.xcconfig"; path = "Target Support Files/Pods-gatabout/Pods-gatabout.release.xcconfig"; sourceTree = "<group>"; };
-		5D2DF7188192D12570446E3D /* Pods-gatabout.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gatabout.debug.xcconfig"; path = "Target Support Files/Pods-gatabout/Pods-gatabout.debug.xcconfig"; sourceTree = "<group>"; };
-		8F8FC975CA89E806D9730C15 /* Pods_gatabout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_gatabout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		ACC453D22F8B41960034CADD /* gatabout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gatabout.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		ACC453DF2F8B41970034CADD /* gataboutTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = gataboutTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		ACC453E92F8B41970034CADD /* gataboutUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = gataboutUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4165D2A8A40581C69C2B21AB /* Pods-gatabout.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gatabout.debug.xcconfig"; path = "Target Support Files/Pods-gatabout/Pods-gatabout.debug.xcconfig"; sourceTree = "<group>"; };
+		A7F16B8F753B170661D81087 /* Pods-gatabout.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gatabout.release.xcconfig"; path = "Target Support Files/Pods-gatabout/Pods-gatabout.release.xcconfig"; sourceTree = "<group>"; };
+		ACF642432F8C0A7E00BE4CCB /* gatabout.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = gatabout.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACF642502F8C0A7F00BE4CCB /* gataboutTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = gataboutTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		ACF6425A2F8C0A7F00BE4CCB /* gataboutUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = gataboutUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D58D70C1D9E4845B5F326A92 /* Pods-gataboutTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gataboutTests.release.xcconfig"; path = "Target Support Files/Pods-gataboutTests/Pods-gataboutTests.release.xcconfig"; sourceTree = "<group>"; };
+		DBE22FC7E7E2DB9DD84E2107 /* Pods-gataboutTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gataboutTests.debug.xcconfig"; path = "Target Support Files/Pods-gataboutTests/Pods-gataboutTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E850599B4D7B88448472A9AF /* Pods_gatabout.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_gatabout.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD31E7BC9E5F025530B17F17 /* Pods_gataboutTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_gataboutTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		ACC453D42F8B41960034CADD /* gatabout */ = {
+		ACF642452F8C0A7E00BE4CCB /* gatabout */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = gatabout;
 			sourceTree = "<group>";
 		};
-		ACC453E22F8B41970034CADD /* gataboutTests */ = {
+		ACF642532F8C0A7F00BE4CCB /* gataboutTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = gataboutTests;
 			sourceTree = "<group>";
 		};
-		ACC453EC2F8B41970034CADD /* gataboutUITests */ = {
+		ACF6425D2F8C0A7F00BE4CCB /* gataboutUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = gataboutUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		ACC453CF2F8B41960034CADD /* Frameworks */ = {
+		ACF642402F8C0A7E00BE4CCB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D2CA45CA5C42A82ED491C2BB /* Pods_gatabout.framework in Frameworks */,
+				D3CCE4E788147A488F27F179 /* Pods_gatabout.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ACC453DC2F8B41970034CADD /* Frameworks */ = {
+		ACF6424D2F8C0A7F00BE4CCB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D634909EA89F1CA115BFC82 /* Pods_gataboutTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ACC453E62F8B41970034CADD /* Frameworks */ = {
+		ACF642572F8C0A7F00BE4CCB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -86,173 +85,176 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		513C13F30F590468DFAD7002 /* Frameworks */ = {
+		85A2237FD1C0F2C760BB4E97 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8F8FC975CA89E806D9730C15 /* Pods_gatabout.framework */,
+				E850599B4D7B88448472A9AF /* Pods_gatabout.framework */,
+				FD31E7BC9E5F025530B17F17 /* Pods_gataboutTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		945729E43FEF8735C728F967 /* Pods */ = {
+		ACF6423A2F8C0A7E00BE4CCB = {
 			isa = PBXGroup;
 			children = (
-				5D2DF7188192D12570446E3D /* Pods-gatabout.debug.xcconfig */,
-				4A821E9C26E683CD6534ADBA /* Pods-gatabout.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
-			sourceTree = "<group>";
-		};
-		ACC453C92F8B41960034CADD = {
-			isa = PBXGroup;
-			children = (
-				ACC453D42F8B41960034CADD /* gatabout */,
-				ACC453E22F8B41970034CADD /* gataboutTests */,
-				ACC453EC2F8B41970034CADD /* gataboutUITests */,
-				ACC453D32F8B41960034CADD /* Products */,
-				945729E43FEF8735C728F967 /* Pods */,
-				513C13F30F590468DFAD7002 /* Frameworks */,
+				ACF642452F8C0A7E00BE4CCB /* gatabout */,
+				ACF642532F8C0A7F00BE4CCB /* gataboutTests */,
+				ACF6425D2F8C0A7F00BE4CCB /* gataboutUITests */,
+				ACF642442F8C0A7E00BE4CCB /* Products */,
+				D61CDD809F9FD1D835999A8F /* Pods */,
+				85A2237FD1C0F2C760BB4E97 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
-		ACC453D32F8B41960034CADD /* Products */ = {
+		ACF642442F8C0A7E00BE4CCB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ACC453D22F8B41960034CADD /* gatabout.app */,
-				ACC453DF2F8B41970034CADD /* gataboutTests.xctest */,
-				ACC453E92F8B41970034CADD /* gataboutUITests.xctest */,
+				ACF642432F8C0A7E00BE4CCB /* gatabout.app */,
+				ACF642502F8C0A7F00BE4CCB /* gataboutTests.xctest */,
+				ACF6425A2F8C0A7F00BE4CCB /* gataboutUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D61CDD809F9FD1D835999A8F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4165D2A8A40581C69C2B21AB /* Pods-gatabout.debug.xcconfig */,
+				A7F16B8F753B170661D81087 /* Pods-gatabout.release.xcconfig */,
+				DBE22FC7E7E2DB9DD84E2107 /* Pods-gataboutTests.debug.xcconfig */,
+				D58D70C1D9E4845B5F326A92 /* Pods-gataboutTests.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		ACC453D12F8B41960034CADD /* gatabout */ = {
+		ACF642422F8C0A7E00BE4CCB /* gatabout */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ACC453F32F8B41970034CADD /* Build configuration list for PBXNativeTarget "gatabout" */;
+			buildConfigurationList = ACF642642F8C0A7F00BE4CCB /* Build configuration list for PBXNativeTarget "gatabout" */;
 			buildPhases = (
-				86597149AD360673D6B4BA63 /* [CP] Check Pods Manifest.lock */,
-				ACC453CE2F8B41960034CADD /* Sources */,
-				ACC453CF2F8B41960034CADD /* Frameworks */,
-				ACC453D02F8B41960034CADD /* Resources */,
-				E91CF225DBF84440DE72061A /* [CP] Embed Pods Frameworks */,
+				FF9D387E375EE51A433A57D4 /* [CP] Check Pods Manifest.lock */,
+				ACF6423F2F8C0A7E00BE4CCB /* Sources */,
+				ACF642402F8C0A7E00BE4CCB /* Frameworks */,
+				ACF642412F8C0A7E00BE4CCB /* Resources */,
+				AAE493BEF8600F810AD9D6D6 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				ACC453D42F8B41960034CADD /* gatabout */,
+				ACF642452F8C0A7E00BE4CCB /* gatabout */,
 			);
 			name = gatabout;
 			productName = gatabout;
-			productReference = ACC453D22F8B41960034CADD /* gatabout.app */;
+			productReference = ACF642432F8C0A7E00BE4CCB /* gatabout.app */;
 			productType = "com.apple.product-type.application";
 		};
-		ACC453DE2F8B41970034CADD /* gataboutTests */ = {
+		ACF6424F2F8C0A7F00BE4CCB /* gataboutTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ACC453F62F8B41970034CADD /* Build configuration list for PBXNativeTarget "gataboutTests" */;
+			buildConfigurationList = ACF642672F8C0A7F00BE4CCB /* Build configuration list for PBXNativeTarget "gataboutTests" */;
 			buildPhases = (
-				ACC453DB2F8B41970034CADD /* Sources */,
-				ACC453DC2F8B41970034CADD /* Frameworks */,
-				ACC453DD2F8B41970034CADD /* Resources */,
+				17A1717C26E6CEB381CF155F /* [CP] Check Pods Manifest.lock */,
+				ACF6424C2F8C0A7F00BE4CCB /* Sources */,
+				ACF6424D2F8C0A7F00BE4CCB /* Frameworks */,
+				ACF6424E2F8C0A7F00BE4CCB /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				ACC453E12F8B41970034CADD /* PBXTargetDependency */,
+				ACF642522F8C0A7F00BE4CCB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				ACC453E22F8B41970034CADD /* gataboutTests */,
+				ACF642532F8C0A7F00BE4CCB /* gataboutTests */,
 			);
 			name = gataboutTests;
 			productName = gataboutTests;
-			productReference = ACC453DF2F8B41970034CADD /* gataboutTests.xctest */;
+			productReference = ACF642502F8C0A7F00BE4CCB /* gataboutTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		ACC453E82F8B41970034CADD /* gataboutUITests */ = {
+		ACF642592F8C0A7F00BE4CCB /* gataboutUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ACC453F92F8B41970034CADD /* Build configuration list for PBXNativeTarget "gataboutUITests" */;
+			buildConfigurationList = ACF6426A2F8C0A7F00BE4CCB /* Build configuration list for PBXNativeTarget "gataboutUITests" */;
 			buildPhases = (
-				ACC453E52F8B41970034CADD /* Sources */,
-				ACC453E62F8B41970034CADD /* Frameworks */,
-				ACC453E72F8B41970034CADD /* Resources */,
+				ACF642562F8C0A7F00BE4CCB /* Sources */,
+				ACF642572F8C0A7F00BE4CCB /* Frameworks */,
+				ACF642582F8C0A7F00BE4CCB /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				ACC453EB2F8B41970034CADD /* PBXTargetDependency */,
+				ACF6425C2F8C0A7F00BE4CCB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				ACC453EC2F8B41970034CADD /* gataboutUITests */,
+				ACF6425D2F8C0A7F00BE4CCB /* gataboutUITests */,
 			);
 			name = gataboutUITests;
 			productName = gataboutUITests;
-			productReference = ACC453E92F8B41970034CADD /* gataboutUITests.xctest */;
+			productReference = ACF6425A2F8C0A7F00BE4CCB /* gataboutUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		ACC453CA2F8B41960034CADD /* Project object */ = {
+		ACF6423B2F8C0A7E00BE4CCB /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2640;
 				LastUpgradeCheck = 2640;
 				TargetAttributes = {
-					ACC453D12F8B41960034CADD = {
+					ACF642422F8C0A7E00BE4CCB = {
 						CreatedOnToolsVersion = 26.4;
 					};
-					ACC453DE2F8B41970034CADD = {
+					ACF6424F2F8C0A7F00BE4CCB = {
 						CreatedOnToolsVersion = 26.4;
-						TestTargetID = ACC453D12F8B41960034CADD;
+						TestTargetID = ACF642422F8C0A7E00BE4CCB;
 					};
-					ACC453E82F8B41970034CADD = {
+					ACF642592F8C0A7F00BE4CCB = {
 						CreatedOnToolsVersion = 26.4;
-						TestTargetID = ACC453D12F8B41960034CADD;
+						TestTargetID = ACF642422F8C0A7E00BE4CCB;
 					};
 				};
 			};
-			buildConfigurationList = ACC453CD2F8B41960034CADD /* Build configuration list for PBXProject "gatabout" */;
+			buildConfigurationList = ACF6423E2F8C0A7E00BE4CCB /* Build configuration list for PBXProject "gatabout" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = ACC453C92F8B41960034CADD;
+			mainGroup = ACF6423A2F8C0A7E00BE4CCB;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = ACC453D32F8B41960034CADD /* Products */;
+			productRefGroup = ACF642442F8C0A7E00BE4CCB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				ACC453D12F8B41960034CADD /* gatabout */,
-				ACC453DE2F8B41970034CADD /* gataboutTests */,
-				ACC453E82F8B41970034CADD /* gataboutUITests */,
+				ACF642422F8C0A7E00BE4CCB /* gatabout */,
+				ACF6424F2F8C0A7F00BE4CCB /* gataboutTests */,
+				ACF642592F8C0A7F00BE4CCB /* gataboutUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		ACC453D02F8B41960034CADD /* Resources */ = {
+		ACF642412F8C0A7E00BE4CCB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ACC453DD2F8B41970034CADD /* Resources */ = {
+		ACF6424E2F8C0A7F00BE4CCB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ACC453E72F8B41970034CADD /* Resources */ = {
+		ACF642582F8C0A7F00BE4CCB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -262,7 +264,50 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		86597149AD360673D6B4BA63 /* [CP] Check Pods Manifest.lock */ = {
+		17A1717C26E6CEB381CF155F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-gataboutTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AAE493BEF8600F810AD9D6D6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-gatabout/Pods-gatabout-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-gatabout/Pods-gatabout-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-gatabout/Pods-gatabout-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FF9D387E375EE51A433A57D4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -284,41 +329,24 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E91CF225DBF84440DE72061A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-gatabout/Pods-gatabout-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-gatabout/Pods-gatabout-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-gatabout/Pods-gatabout-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		ACC453CE2F8B41960034CADD /* Sources */ = {
+		ACF6423F2F8C0A7E00BE4CCB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ACC453DB2F8B41970034CADD /* Sources */ = {
+		ACF6424C2F8C0A7F00BE4CCB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		ACC453E52F8B41970034CADD /* Sources */ = {
+		ACF642562F8C0A7F00BE4CCB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -328,20 +356,20 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		ACC453E12F8B41970034CADD /* PBXTargetDependency */ = {
+		ACF642522F8C0A7F00BE4CCB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = ACC453D12F8B41960034CADD /* gatabout */;
-			targetProxy = ACC453E02F8B41970034CADD /* PBXContainerItemProxy */;
+			target = ACF642422F8C0A7E00BE4CCB /* gatabout */;
+			targetProxy = ACF642512F8C0A7F00BE4CCB /* PBXContainerItemProxy */;
 		};
-		ACC453EB2F8B41970034CADD /* PBXTargetDependency */ = {
+		ACF6425C2F8C0A7F00BE4CCB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = ACC453D12F8B41960034CADD /* gatabout */;
-			targetProxy = ACC453EA2F8B41970034CADD /* PBXContainerItemProxy */;
+			target = ACF642422F8C0A7E00BE4CCB /* gatabout */;
+			targetProxy = ACF6425B2F8C0A7F00BE4CCB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		ACC453F12F8B41970034CADD /* Debug */ = {
+		ACF642622F8C0A7F00BE4CCB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -405,7 +433,7 @@
 			};
 			name = Debug;
 		};
-		ACC453F22F8B41970034CADD /* Release */ = {
+		ACF642632F8C0A7F00BE4CCB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -462,9 +490,9 @@
 			};
 			name = Release;
 		};
-		ACC453F42F8B41970034CADD /* Debug */ = {
+		ACF642652F8C0A7F00BE4CCB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D2DF7188192D12570446E3D /* Pods-gatabout.debug.xcconfig */;
+			baseConfigurationReference = 4165D2A8A40581C69C2B21AB /* Pods-gatabout.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -473,14 +501,13 @@
 				DEVELOPMENT_TEAM = LP44T8U46A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_FirebaseAppDelegateProxyEnabled = NO;
-				INFOPLIST_KEY_GoogleUtilitiesAppDelegateProxyEnabled = NO;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Gatabout needs your location to find events near you.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "gatabout needs your location to find events near you";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -498,9 +525,9 @@
 			};
 			name = Debug;
 		};
-		ACC453F52F8B41970034CADD /* Release */ = {
+		ACF642662F8C0A7F00BE4CCB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4A821E9C26E683CD6534ADBA /* Pods-gatabout.release.xcconfig */;
+			baseConfigurationReference = A7F16B8F753B170661D81087 /* Pods-gatabout.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -509,14 +536,13 @@
 				DEVELOPMENT_TEAM = LP44T8U46A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_FirebaseAppDelegateProxyEnabled = NO;
-				INFOPLIST_KEY_GoogleUtilitiesAppDelegateProxyEnabled = NO;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Gatabout needs your location to find events near you.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "gatabout needs your location to find events near you";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -534,8 +560,9 @@
 			};
 			name = Release;
 		};
-		ACC453F72F8B41970034CADD /* Debug */ = {
+		ACF642682F8C0A7F00BE4CCB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DBE22FC7E7E2DB9DD84E2107 /* Pods-gataboutTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -556,8 +583,9 @@
 			};
 			name = Debug;
 		};
-		ACC453F82F8B41970034CADD /* Release */ = {
+		ACF642692F8C0A7F00BE4CCB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D58D70C1D9E4845B5F326A92 /* Pods-gataboutTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -578,7 +606,7 @@
 			};
 			name = Release;
 		};
-		ACC453FA2F8B41970034CADD /* Debug */ = {
+		ACF6426B2F8C0A7F00BE4CCB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -598,7 +626,7 @@
 			};
 			name = Debug;
 		};
-		ACC453FB2F8B41970034CADD /* Release */ = {
+		ACF6426C2F8C0A7F00BE4CCB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -621,43 +649,43 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		ACC453CD2F8B41960034CADD /* Build configuration list for PBXProject "gatabout" */ = {
+		ACF6423E2F8C0A7E00BE4CCB /* Build configuration list for PBXProject "gatabout" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				ACC453F12F8B41970034CADD /* Debug */,
-				ACC453F22F8B41970034CADD /* Release */,
+				ACF642622F8C0A7F00BE4CCB /* Debug */,
+				ACF642632F8C0A7F00BE4CCB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ACC453F32F8B41970034CADD /* Build configuration list for PBXNativeTarget "gatabout" */ = {
+		ACF642642F8C0A7F00BE4CCB /* Build configuration list for PBXNativeTarget "gatabout" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				ACC453F42F8B41970034CADD /* Debug */,
-				ACC453F52F8B41970034CADD /* Release */,
+				ACF642652F8C0A7F00BE4CCB /* Debug */,
+				ACF642662F8C0A7F00BE4CCB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ACC453F62F8B41970034CADD /* Build configuration list for PBXNativeTarget "gataboutTests" */ = {
+		ACF642672F8C0A7F00BE4CCB /* Build configuration list for PBXNativeTarget "gataboutTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				ACC453F72F8B41970034CADD /* Debug */,
-				ACC453F82F8B41970034CADD /* Release */,
+				ACF642682F8C0A7F00BE4CCB /* Debug */,
+				ACF642692F8C0A7F00BE4CCB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		ACC453F92F8B41970034CADD /* Build configuration list for PBXNativeTarget "gataboutUITests" */ = {
+		ACF6426A2F8C0A7F00BE4CCB /* Build configuration list for PBXNativeTarget "gataboutUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				ACC453FA2F8B41970034CADD /* Debug */,
-				ACC453FB2F8B41970034CADD /* Release */,
+				ACF6426B2F8C0A7F00BE4CCB /* Debug */,
+				ACF6426C2F8C0A7F00BE4CCB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = ACC453CA2F8B41960034CADD /* Project object */;
+	rootObject = ACF6423B2F8C0A7E00BE4CCB /* Project object */;
 }
