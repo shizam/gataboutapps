@@ -3,15 +3,22 @@ import SwiftUI
 @main
 struct GataboutApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @State private var services = AppServices()
+    @State private var services: AppServices?
 
     var body: some Scene {
         WindowGroup {
-            RootView(
-                authService: services.authService,
-                eventRepository: services.eventRepository,
-                locationManager: services.locationManager
-            )
+            if let services {
+                RootView(
+                    authService: services.authService,
+                    eventRepository: services.eventRepository,
+                    locationManager: services.locationManager
+                )
+            } else {
+                ProgressView()
+                    .task {
+                        services = AppServices()
+                    }
+            }
         }
     }
 }
