@@ -1,10 +1,10 @@
-# Gatabout iOS — Project Status
+# Bunchabout iOS — Project Status
 
 > Last updated: 2026-04-12
 
 ## What This Is
 
-iOS app for the lfourg social coordination platform. Users create location-based events, discover nearby events, join/chat/rate each other. The fullstack backend (Firebase + GraphQL) lives at `../lfourg/`. The contract/spec lives at `../lfourg/contract/`.
+iOS app for the bunchabout social coordination platform. Users create location-based events, discover nearby events, join/chat/rate each other. The fullstack backend (Firebase + GraphQL) lives at `../bunchabout/`. The contract/spec lives at `../bunchabout/contract/`.
 
 ## Architecture
 
@@ -25,16 +25,16 @@ Views (SwiftUI) → ViewModels (@Observable) → Repositories → GraphQLClient 
 - Swift 6.2 with default MainActor isolation (everything implicitly `@MainActor`)
 - Approachable concurrency enabled
 - Firebase via **CocoaPods** (not SPM — user preference)
-- Must use `gatabout.xcworkspace` (not .xcodeproj) due to CocoaPods
+- Must use `bunchabout.xcworkspace` (not .xcodeproj) due to CocoaPods
 
 ## What's Built (Milestones 1 & 2: Auth + Feed)
 
 ### File Structure
 
 ```
-gatabout/gatabout/
+bunchabout/bunchabout/
 ├── App/
-│   ├── gataboutApp.swift           # @main, FirebaseApp.configure(), DI setup via .environment()
+│   ├── bunchaboutApp.swift           # @main, FirebaseApp.configure(), DI setup via .environment()
 │   ├── RootView.swift              # Auth-gated: unknown→ProgressView, signedOut→Login, signedIn→Tabs
 │   └── MainTabView.swift           # TabView with Feed + Profile tabs
 ├── Core/
@@ -105,7 +105,7 @@ gatabout/gatabout/
 - `LoginViewModelTests` (3) — signIn success, signIn failure, validation
 - `FeedViewModelTests` (2) — loadFeed success, loadFeed error
 
-Test helpers in `gataboutTests/Helpers/`:
+Test helpers in `bunchaboutTests/Helpers/`:
 - `MockURLProtocol` (and per-suite variants to avoid cross-suite state collision)
 - `MockAuthService` (conforms to `AuthServiceProtocol`)
 - `TestHelpers.swift` (`makeTestClient`, `mockResponse`)
@@ -113,7 +113,7 @@ Test helpers in `gataboutTests/Helpers/`:
 ### Dependency Flow
 
 ```
-gataboutApp (init)
+bunchaboutApp (init)
   ├── FirebaseApp.configure()
   └── Create services:
         ├── AuthService (Firebase Auth state listener)
@@ -182,13 +182,13 @@ The app builds successfully (`** BUILD SUCCEEDED **`) and all 20 unit tests pass
 
 ## Backend Context
 
-- Firebase project: `lfourg-a6fe3`
-- GraphQL endpoint: `https://lfourg-a6fe3.web.app/graphql`
+- Firebase project: `bunchabout`
+- GraphQL endpoint: `https://bunchabout.web.app/graphql`
 - Auth: Firebase Auth, email/password only (no OAuth in v1)
 - Chat: Firestore-native (NOT GraphQL) — direct `onSnapshot` listeners when we build it
 - Notifications: Firestore-native, in-app only (no FCM push in v1)
-- Full contract/spec: `../lfourg/contract/`
-- Schema: `../lfourg/contract/schema.graphql`
+- Full contract/spec: `../bunchabout/contract/`
+- Schema: `../bunchabout/contract/schema.graphql`
 
 ## Design Docs
 

@@ -1,0 +1,677 @@
+<h2>Full screen set — v3</h2>
+<p class="subtitle">Discover with search, Map screen, modal Event Detail with sticky bottom bar & facepile, Create wizard, Chat, Profile. Same purple palette, HIG sizing.</p>
+
+<style>
+  :root {
+    --ink: #0F0F14;
+    --ink2: #2B2B33;
+    --muted: #6B6B73;
+    --muted2: #9A9AA3;
+    --line: #ECECEF;
+    --line2: #F4F4F7;
+    --accent: #5B3FE5;
+    --accent-deep: #4A2FD6;
+    --accent-soft: #F4F1FF;
+    --bg: #FFFFFF;
+    --bg-alt: #F8F8FA;
+    --success: #1F9D55;
+    --warn: #E28A2B;
+    --star: #F5A623;
+  }
+  .phones-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; max-width: 1200px; margin: 0 auto; }
+  @media (max-width: 900px) { .phones-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .phone-card { background: #fff; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .phone-card:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(0,0,0,0.07); }
+  .phone { aspect-ratio: 9/19.5; background: var(--bg); position: relative; display: flex; flex-direction: column; overflow: hidden; }
+  .sb { height: 18px; font-size: 11px; color: var(--ink); display: flex; justify-content: space-between; align-items: center; padding: 8px 20px 2px; }
+  .sb .time { font-weight: 600; }
+
+  /* Placeholder "photography" */
+  .photo { position: relative; background-size: cover; background-position: center; }
+  .photo-ramen { background-image: linear-gradient(180deg, rgba(0,0,0,0.0) 50%, rgba(0,0,0,0.55) 100%), linear-gradient(135deg, #8B6F47 0%, #3A2819 100%); }
+  .photo-soccer { background-image: linear-gradient(180deg, rgba(0,0,0,0.0) 50%, rgba(0,0,0,0.45) 100%), linear-gradient(135deg, #5A7A45 0%, #2B3E1C 100%); }
+  .photo-games { background-image: linear-gradient(180deg, rgba(0,0,0,0.0) 50%, rgba(0,0,0,0.45) 100%), linear-gradient(135deg, #4A5878 0%, #1E2638 100%); }
+  .photo-coffee { background-image: linear-gradient(135deg, #BFA78A 0%, #6A4E35 100%); }
+
+  /* Shared icon button */
+  .icon-btn { width: 44px; height: 44px; border-radius: 14px; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; position: relative; }
+  .icon-btn svg { width: 20px; height: 20px; stroke: var(--ink); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .dot-red { position: absolute; top: 9px; right: 9px; width: 9px; height: 9px; background: #FF4757; border-radius: 50%; border: 2px solid var(--bg-alt); }
+
+  /* Tab bar shared */
+  .tabbar { margin-top: auto; display: flex; background: #fff; border-top: 1px solid var(--line); height: 72px; align-items: flex-start; justify-content: space-around; padding-top: 10px; }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; min-height: 44px; justify-content: center; }
+  .tab svg { width: 24px; height: 24px; stroke: var(--muted2); stroke-width: 1.7; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .tab span { font-size: 10px; font-weight: 600; color: var(--muted2); }
+  .tab.on svg { stroke: var(--accent); fill: rgba(91,63,229,0.08); }
+  .tab.on span { color: var(--accent); }
+
+  .fab { position: absolute; bottom: 92px; right: 18px; width: 56px; height: 56px; border-radius: 28px; background: var(--accent); display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 22px rgba(91,63,229,0.4), 0 2px 6px rgba(91,63,229,0.2); }
+  .fab svg { width: 24px; height: 24px; stroke: #fff; stroke-width: 2.4; fill: none; stroke-linecap: round; }
+
+  /* --- DISCOVER v3 --- */
+  .disc-top { padding: 10px 20px 6px; }
+  .search-row { display: flex; gap: 10px; align-items: center; margin-bottom: 14px; }
+  .search-bar { flex: 1; height: 48px; background: var(--bg-alt); border-radius: 24px; padding: 0 18px; display: flex; align-items: center; gap: 10px; }
+  .search-bar svg { width: 18px; height: 18px; stroke: var(--muted); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .search-bar span { font-size: 14px; color: var(--muted); }
+  .filter-btn { width: 48px; height: 48px; border-radius: 24px; background: var(--bg-alt); display: flex; align-items: center; justify-content: center; }
+  .filter-btn svg { width: 20px; height: 20px; stroke: var(--ink); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .sec-head h2 { margin: 0; font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -0.025em; }
+  .map-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 8px 14px; font-size: 13px; font-weight: 600; color: var(--ink); min-height: 36px; }
+  .map-btn svg { width: 14px; height: 14px; stroke: var(--ink); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .chiprow { display: flex; gap: 8px; padding: 6px 20px 16px; overflow: hidden; }
+  .chip { font-size: 14px; padding: 10px 16px; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--ink2); font-weight: 600; white-space: nowrap; min-height: 36px; display: inline-flex; align-items: center; }
+  .chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  .feed-scroll { flex: 1; overflow: hidden; padding: 0 20px 20px; }
+  .event-card { background: #fff; border: 1px solid var(--line); border-radius: 18px; overflow: hidden; margin-bottom: 16px; }
+  .event-photo { aspect-ratio: 16/10; position: relative; }
+  .event-photo .dist-pill { position: absolute; top: 12px; right: 12px; background: rgba(15,15,20,0.85); color: #fff; font-size: 13px; font-weight: 600; padding: 7px 12px; border-radius: 999px; backdrop-filter: blur(8px); }
+  .event-photo .cat-pill { position: absolute; bottom: 12px; left: 12px; background: rgba(255,255,255,0.92); color: var(--ink); font-size: 12px; font-weight: 600; padding: 6px 11px; border-radius: 999px; backdrop-filter: blur(8px); display: inline-flex; align-items: center; gap: 5px; }
+  .event-photo .cat-pill svg { width: 12px; height: 12px; stroke: var(--ink); stroke-width: 2; fill: none; }
+  .event-meta { padding: 16px 18px 16px; }
+  .event-title { font-size: 19px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; margin: 0 0 10px; line-height: 1.25; }
+  .meta-line { display: flex; align-items: center; gap: 10px; font-size: 14px; color: var(--muted); margin-top: 6px; }
+  .meta-line svg { width: 16px; height: 16px; stroke: var(--muted); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+  .meta-line strong { color: var(--ink2); font-weight: 500; }
+
+  /* --- MAP SCREEN --- */
+  .map-full { flex: 1; background: linear-gradient(160deg, #E4EAE1 0%, #D5DCD1 50%, #E8ECE3 100%); position: relative; overflow: hidden; }
+  .map-full::before { content: ''; position: absolute; inset: 0;
+    background-image:
+      linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px),
+      linear-gradient(0deg, rgba(255,255,255,0.6) 1px, transparent 1px),
+      linear-gradient(35deg, transparent 60%, rgba(140, 170, 140, 0.35) 61%, rgba(140, 170, 140, 0.35) 64%, transparent 65%);
+    background-size: 40px 40px, 40px 40px, 180px 180px; }
+  .map-pin { position: absolute; width: 36px; height: 36px; border-radius: 50%; background: var(--accent); border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.25); display: flex; align-items: center; justify-content: center; }
+  .map-pin svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 2.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .map-pin.active { width: 44px; height: 44px; background: var(--ink); }
+  .map-pin.active svg { width: 20px; height: 20px; }
+  .map-pin::after { content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 7px solid #fff; }
+  .map-top-bar { position: absolute; top: 10px; left: 0; right: 0; padding: 0 20px; display: flex; gap: 10px; align-items: center; z-index: 3; }
+  .map-list-btn { position: absolute; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--ink); color: #fff; font-size: 13px; font-weight: 600; padding: 10px 18px; border-radius: 999px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 6px 16px rgba(0,0,0,0.2); min-height: 40px; }
+  .map-list-btn svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 2; fill: none; }
+  .map-sheet { position: absolute; bottom: 72px; left: 12px; right: 12px; background: #fff; border-radius: 18px; box-shadow: 0 8px 28px rgba(0,0,0,0.12); overflow: hidden; z-index: 2; }
+  .map-sheet-drag { height: 4px; width: 36px; background: var(--line); border-radius: 2px; margin: 8px auto 0; }
+  .map-sheet-card { padding: 12px 14px 14px; display: flex; gap: 12px; align-items: center; }
+  .map-sheet-img { width: 60px; height: 60px; border-radius: 12px; flex-shrink: 0; }
+  .map-sheet-body { flex: 1; min-width: 0; }
+  .map-sheet-body h5 { margin: 0 0 4px; font-size: 15px; font-weight: 700; color: var(--ink); letter-spacing: -0.015em; }
+  .map-sheet-body .meta { font-size: 12px; color: var(--muted); display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .map-sheet-body .meta .dot { width: 3px; height: 3px; background: var(--muted2); border-radius: 50%; }
+  .map-sheet-body .slots { color: var(--accent); font-weight: 600; }
+  .map-sheet-chev { color: var(--muted2); }
+
+  /* --- EVENT DETAIL v3 (MODAL) --- */
+  .modal-bg { background: rgba(0,0,0,0.05); position: absolute; inset: 0; }
+  .modal-sheet { position: absolute; top: 18px; left: 0; right: 0; bottom: 0; background: var(--bg-alt); border-radius: 24px 24px 0 0; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 -4px 24px rgba(0,0,0,0.1); }
+  .modal-hero { position: relative; aspect-ratio: 16/12; border-radius: 24px 24px 0 0; overflow: hidden; }
+  .modal-hero .close-btn, .modal-hero .share-btn {
+    position: absolute; top: 12px; width: 40px; height: 40px; border-radius: 20px;
+    background: rgba(255,255,255,0.96); display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .modal-hero .close-btn { left: 14px; }
+  .modal-hero .share-btn { right: 14px; }
+  .modal-hero svg { width: 18px; height: 18px; stroke: var(--ink); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .modal-hero .hero-overlay { position: absolute; left: 0; right: 0; bottom: 0; padding: 16px 18px 18px; color: #fff; }
+  .modal-hero .hero-overlay h1 { margin: 0 0 10px; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+  .facepile-row { display: flex; align-items: center; gap: 10px; }
+  .facepile { display: flex; }
+  .facepile .av { width: 28px; height: 28px; border-radius: 14px; border: 2px solid #fff; margin-left: -8px; overflow: hidden; background-size: cover; background-position: center; }
+  .facepile .av:first-child { margin-left: 0; }
+  .fp1 { background: linear-gradient(135deg, #C5B8E8, #8A74D1); }
+  .fp2 { background: linear-gradient(135deg, #A8B5D0, #6D82AB); }
+  .fp3 { background: linear-gradient(135deg, #B8C9A8, #7A9163); }
+  .fp4 { background: linear-gradient(135deg, #D0BFA5, #A08868); }
+  .fp5 { background: linear-gradient(135deg, #BCAEA0, #7E6F5F); }
+  .facepile-count { font-size: 12px; font-weight: 600; color: #fff; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 999px; backdrop-filter: blur(6px); }
+
+  .modal-scroll { flex: 1; overflow: hidden; background: #fff; }
+
+  .host-card { display: flex; align-items: center; gap: 12px; padding: 16px 20px; background: #fff; border-bottom: 1px solid var(--line); }
+  .host-av-lg { width: 44px; height: 44px; border-radius: 22px; background: linear-gradient(135deg, #B8C9A8, #7A9163); flex-shrink: 0; }
+  .host-info { flex: 1; }
+  .host-info .by { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+  .host-info strong { display: block; font-size: 15px; font-weight: 600; color: var(--ink); }
+  .host-info .meta { font-size: 12px; color: var(--muted); display: inline-flex; align-items: center; gap: 4px; margin-top: 2px; }
+  .host-info .meta svg { width: 11px; height: 11px; fill: var(--star); stroke: none; }
+  .follow-btn { border: 1px solid var(--line); background: #fff; padding: 9px 18px; border-radius: 999px; font-size: 13px; font-weight: 600; color: var(--ink); min-height: 36px; }
+
+  .section { padding: 18px 20px; background: #fff; }
+  .section-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .section-head h3 { margin: 0; font-size: 16px; font-weight: 700; color: var(--ink); letter-spacing: -0.01em; }
+  .section-head .more { font-size: 13px; color: var(--accent); font-weight: 600; }
+  .section-divider { height: 8px; background: var(--bg-alt); }
+  .section p { font-size: 14px; color: var(--ink2); line-height: 1.55; margin: 0; }
+  .section .read-more { color: var(--accent); font-weight: 600; }
+
+  .when-card { display: flex; gap: 14px; align-items: center; }
+  .when-date { width: 64px; text-align: center; flex-shrink: 0; border: 1.5px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .when-date .mo { background: var(--ink); color: #fff; font-size: 10px; font-weight: 700; padding: 4px 0; letter-spacing: 0.08em; }
+  .when-date .dy { font-size: 22px; font-weight: 700; padding: 6px 0 2px; color: var(--ink); }
+  .when-date .dow { font-size: 10px; padding: 0 0 6px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .when-info strong { display: block; font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+  .when-info span { font-size: 13px; color: var(--muted); }
+
+  .where-card { display: flex; gap: 12px; align-items: stretch; }
+  .where-map { width: 88px; border-radius: 12px; background: linear-gradient(135deg, #E8EDE4 0%, #D4DCD0 100%); flex-shrink: 0; position: relative; overflow: hidden; }
+  .where-map::after { content: ''; position: absolute; top: 50%; left: 50%; width: 20px; height: 20px; margin: -10px 0 0 -10px; background: var(--accent); border-radius: 50%; border: 3px solid #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+  .where-info strong { display: block; font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+  .where-info span { font-size: 13px; color: var(--muted); line-height: 1.4; display: block; margin-bottom: 4px; }
+  .where-info .dist { font-size: 12px; color: var(--accent); font-weight: 600; }
+
+  .att-row { display: flex; align-items: center; gap: 10px; }
+  .att-facepile { display: flex; flex: 1; }
+  .att-facepile .av { width: 44px; height: 44px; border-radius: 22px; border: 3px solid #fff; margin-left: -10px; }
+  .att-facepile .av:first-child { margin-left: 0; }
+  .att-facepile .av.empty { background: var(--line2); border: 2px dashed var(--line); display: flex; align-items: center; justify-content: center; }
+  .att-facepile .av.empty svg { width: 14px; height: 14px; stroke: var(--muted2); stroke-width: 2; fill: none; }
+
+  /* Sticky bottom bar */
+  .modal-bottom-bar { background: #fff; border-top: 1px solid var(--line); padding: 12px 16px 14px; display: flex; align-items: center; gap: 10px; box-shadow: 0 -4px 14px rgba(0,0,0,0.06); }
+  .action-btn-circle { width: 48px; height: 48px; border-radius: 24px; border: 1.5px solid var(--line); background: #fff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .action-btn-circle svg { width: 20px; height: 20px; stroke: var(--ink); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .join-btn { flex: 1; height: 52px; background: var(--accent); color: #fff; border-radius: 26px; font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 6px 14px rgba(91,63,229,0.35); }
+  .join-btn svg { width: 18px; height: 18px; stroke: #fff; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* --- CREATE WIZARD --- */
+  .wiz-top { padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+  .wiz-top .title { font-size: 14px; font-weight: 600; color: var(--muted); }
+  .wiz-progress { display: flex; gap: 5px; padding: 0 20px 16px; }
+  .wiz-progress .seg { flex: 1; height: 4px; border-radius: 2px; background: var(--line); }
+  .wiz-progress .seg.on { background: var(--accent); }
+  .wiz-body { padding: 0 20px; flex: 1; overflow: hidden; }
+  .wiz-body h2 { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); margin: 0 0 6px; }
+  .wiz-body .sub { font-size: 15px; color: var(--muted); margin-bottom: 22px; }
+  .cat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .cat-tile { padding: 18px 14px; border: 1.5px solid var(--line); border-radius: 16px; background: #fff; display: flex; flex-direction: column; gap: 10px; min-height: 88px; }
+  .cat-tile svg { width: 22px; height: 22px; stroke: var(--ink); stroke-width: 1.7; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .cat-tile .nm { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .cat-tile .desc { font-size: 11px; color: var(--muted); margin-top: -6px; }
+  .cat-tile.sel { background: var(--ink); border-color: var(--ink); }
+  .cat-tile.sel svg { stroke: #fff; }
+  .cat-tile.sel .nm { color: #fff; }
+  .cat-tile.sel .desc { color: rgba(255,255,255,0.7); }
+
+  .wiz-bottom { padding: 14px 20px 22px; background: #fff; border-top: 1px solid var(--line); display: flex; gap: 10px; align-items: center; }
+  .wiz-bottom .next-btn { flex: 1; height: 52px; background: var(--accent); color: #fff; border-radius: 14px; font-size: 15px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center; }
+  .wiz-bottom .skip { color: var(--muted); font-size: 14px; font-weight: 600; padding: 0 8px; }
+
+  /* --- CHAT --- */
+  .chat-tab-toggle { display: flex; gap: 6px; padding: 6px 20px 14px; }
+  .cseg { flex: 1; text-align: center; font-size: 14px; font-weight: 600; padding: 11px 0; color: var(--ink2); background: var(--bg-alt); border-radius: 12px; min-height: 44px; display: flex; align-items: center; justify-content: center; }
+  .cseg.on { background: var(--ink); color: #fff; }
+  .chat-list { flex: 1; padding: 0 20px; overflow: hidden; }
+  .chat-row { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--line2); align-items: center; min-height: 64px; }
+  .chat-row:last-child { border-bottom: none; }
+  .chat-av { width: 52px; height: 52px; border-radius: 26px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: var(--accent-soft); color: var(--accent); position: relative; overflow: hidden; }
+  .chat-av.dm { background: linear-gradient(135deg, #D6CBE8, #AE99D7); color: #fff; font-size: 15px; font-weight: 700; }
+  .chat-av svg { width: 22px; height: 22px; stroke: var(--accent); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .chat-body { flex: 1; min-width: 0; }
+  .chat-head { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; margin-bottom: 4px; }
+  .chat-head h5 { margin: 0; font-size: 15px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chat-head .t { font-size: 12px; color: var(--muted); flex-shrink: 0; font-weight: 500; }
+  .chat-preview { font-size: 13px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chat-preview.unread { color: var(--ink2); font-weight: 600; }
+  .unread-dot { width: 9px; height: 9px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+
+  /* --- PROFILE --- */
+  .prof-hero { padding: 18px 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .prof-av { width: 86px; height: 86px; border-radius: 43px; background: var(--accent-soft); color: var(--accent); font-size: 30px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .prof-name { font-size: 22px; font-weight: 700; color: var(--ink); letter-spacing: -0.02em; }
+  .prof-bio { font-size: 14px; color: var(--muted); text-align: center; padding: 0 16px; line-height: 1.45; }
+  .prof-rating-row { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink2); }
+  .prof-rating-row svg { width: 14px; height: 14px; fill: var(--star); }
+  .prof-rating-row .dot { width: 3px; height: 3px; background: var(--muted2); border-radius: 50%; }
+  .prof-stats { display: flex; padding: 12px 20px 16px; gap: 10px; }
+  .stat { flex: 1; background: var(--bg-alt); border-radius: 14px; padding: 14px 10px; text-align: center; }
+  .stat strong { display: block; font-size: 20px; color: var(--ink); font-weight: 700; letter-spacing: -0.015em; }
+  .stat span { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 3px; display: block; font-weight: 600; }
+  .traits-wrap { padding: 6px 20px 8px; }
+  .traits-wrap h4 { font-size: 12px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 12px 0 10px; }
+  .trait-chip { display: inline-block; font-size: 13px; padding: 8px 13px; border-radius: 999px; margin: 0 6px 8px 0; font-weight: 600; background: var(--accent-soft); color: var(--accent); min-height: 34px; line-height: 18px; }
+  .trait-chip.star { background: var(--ink); color: #fff; }
+  .trait-chip.star::before { content: '★'; margin-right: 4px; color: var(--star); }
+  .badges-row { display: flex; gap: 10px; padding: 2px 20px 14px; }
+  .badge-tile { flex: 1; aspect-ratio: 1/1; border-radius: 14px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; }
+  .badge-tile svg { width: 22px; height: 22px; stroke: var(--accent); stroke-width: 1.6; fill: none; }
+  .badge-tile.locked { background: var(--bg-alt); }
+  .badge-tile.locked svg { stroke: var(--muted2); }
+
+  /* cb */
+  .cb { padding: 14px 16px 16px; background: #fff; border-top: 1px solid var(--line); }
+  .cb h3 { margin: 0 0 4px; font-size: 13px; font-weight: 600; color: var(--ink); }
+  .cb p { margin: 0; font-size: 11.5px; color: var(--muted); line-height: 1.55; }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ic-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polygon points="16.2,7.8 13.9,13.9 7.8,16.2 10.1,10.1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="ic-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17"/><path d="M8 3v4M16 3v4"/></symbol>
+    <symbol id="ic-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+    <symbol id="ic-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c1.2-3.9 4.3-6 8-6s6.8 2.1 8 6"/></symbol>
+    <symbol id="ic-bell" viewBox="0 0 24 24"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-1.5 2h15L18 16z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="ic-map" viewBox="0 0 24 24"><polygon points="3,6 9,3 15,6 21,3 21,18 15,21 9,18 3,21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></symbol>
+    <symbol id="ic-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+    <symbol id="ic-back" viewBox="0 0 24 24"><polyline points="15,5 7,12 15,19"/></symbol>
+    <symbol id="ic-x" viewBox="0 0 24 24"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></symbol>
+    <symbol id="ic-share" viewBox="0 0 24 24"><circle cx="7" cy="12" r="2.5"/><circle cx="17" cy="6" r="2.5"/><circle cx="17" cy="18" r="2.5"/><line x1="9" y1="11" x2="15" y2="7"/><line x1="9" y1="13" x2="15" y2="17"/></symbol>
+    <symbol id="ic-heart" viewBox="0 0 24 24"><path d="M12 21s-7-4.5-9-9a5 5 0 0 1 9-3 5 5 0 0 1 9 3c-2 4.5-9 9-9 9z"/></symbol>
+    <symbol id="ic-pin" viewBox="0 0 24 24"><path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+    <symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 16,14"/></symbol>
+    <symbol id="ic-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c.8-3 3.2-5 6-5s5.2 2 6 5"/><path d="M15 20c.5-2 2-3.2 4-3.5"/></symbol>
+    <symbol id="ic-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></symbol>
+    <symbol id="ic-filter" viewBox="0 0 24 24"><line x1="4" y1="6" x2="16" y2="6"/><line x1="4" y1="12" x2="10" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="14" cy="18" r="2"/></symbol>
+    <symbol id="ic-list" viewBox="0 0 24 24"><line x1="5" y1="7" x2="19" y2="7"/><line x1="5" y1="12" x2="19" y2="12"/><line x1="5" y1="17" x2="19" y2="17"/></symbol>
+    <symbol id="ic-fork" viewBox="0 0 24 24"><path d="M8 3v7a3 3 0 0 0 6 0V3"/><line x1="11" y1="10" x2="11" y2="21"/></symbol>
+    <symbol id="ic-coffee" viewBox="0 0 24 24"><path d="M4 8h13v6a5 5 0 0 1-10 0V8"/><path d="M17 10h2a2 2 0 0 1 0 4h-2"/><line x1="7" y1="3" x2="7" y2="5"/><line x1="11" y1="3" x2="11" y2="5"/></symbol>
+    <symbol id="ic-ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M4 10c4 2 12 2 16 0"/><path d="M8 20c1-4 1-8 0-12"/><path d="M16 20c-1-4-1-8 0-12"/></symbol>
+    <symbol id="ic-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15" r="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="ic-music" viewBox="0 0 24 24"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></symbol>
+    <symbol id="ic-hike" viewBox="0 0 24 24"><path d="M3 20l7-11 4 5 3-4 4 10z"/><circle cx="14" cy="5" r="2"/></symbol>
+    <symbol id="ic-cam" viewBox="0 0 24 24"><path d="M4 8h4l2-2h4l2 2h4v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+    <symbol id="ic-star-fill" viewBox="0 0 24 24"><polygon points="12,3 14.5,9 21,9.5 16,14 17.5,20 12,17 6.5,20 8,14 3,9.5 9.5,9"/></symbol>
+    <symbol id="ic-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 1 1 8 0v3"/></symbol>
+    <symbol id="ic-trophy" viewBox="0 0 24 24"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 6H4v2a3 3 0 0 0 3 3"/><path d="M17 6h3v2a3 3 0 0 1-3 3"/><line x1="12" y1="13" x2="12" y2="17"/><path d="M8 21h8l-1-4H9z"/></symbol>
+    <symbol id="ic-gift" viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="10" rx="1"/><line x1="12" y1="10" x2="12" y2="20"/><path d="M5 10V8h14v2"/><path d="M12 8c-2 0-4-1-4-3a2 2 0 0 1 4 0v3z"/><path d="M12 8c2 0 4-1 4-3a2 2 0 0 0-4 0v3z"/></symbol>
+    <symbol id="ic-chevron" viewBox="0 0 24 24"><polyline points="9,6 15,12 9,18"/></symbol>
+  </defs>
+</svg>
+
+<div class="phones-grid">
+
+  <!-- 1. DISCOVER v3 with search -->
+  <div class="card phone-card" data-choice="discover-v3" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="sb"><span class="time">9:41</span><span>●●●</span></div>
+      <div class="disc-top">
+        <div class="search-row">
+          <div class="search-bar">
+            <svg><use href="#ic-search"/></svg>
+            <span>Search events...</span>
+          </div>
+          <div class="filter-btn"><svg><use href="#ic-filter"/></svg></div>
+        </div>
+        <div class="sec-head">
+          <h2>Near you</h2>
+          <div class="map-btn"><svg><use href="#ic-map"/></svg>Map</div>
+        </div>
+      </div>
+      <div class="chiprow">
+        <span class="chip on">All</span>
+        <span class="chip">Dining</span>
+        <span class="chip">Sports</span>
+        <span class="chip">Games</span>
+      </div>
+      <div class="feed-scroll">
+        <div class="event-card">
+          <div class="event-photo photo photo-ramen">
+            <span class="dist-pill">0.4 mi</span>
+            <span class="cat-pill"><svg><use href="#ic-fork"/></svg>Dining</span>
+          </div>
+          <div class="event-meta">
+            <h3 class="event-title">Ramen night at Ippudo</h3>
+            <div class="meta-line"><svg><use href="#ic-calendar"/></svg><span><strong>Thu, Apr 16</strong> · 7:00 PM</span></div>
+            <div class="meta-line"><svg><use href="#ic-pin"/></svg><span>Ippudo Union Square</span></div>
+            <div class="meta-line"><svg><use href="#ic-users"/></svg><span><strong>2 of 4</strong> going</span></div>
+          </div>
+        </div>
+        <div class="event-card">
+          <div class="event-photo photo photo-soccer">
+            <span class="dist-pill">1.2 mi</span>
+          </div>
+          <div class="event-meta">
+            <h3 class="event-title">Pickup soccer, GG Park</h3>
+          </div>
+        </div>
+      </div>
+      <div class="fab"><svg><use href="#ic-plus"/></svg></div>
+      <div class="tabbar">
+        <div class="tab on"><svg><use href="#ic-compass"/></svg><span>Discover</span></div>
+        <div class="tab"><svg><use href="#ic-calendar"/></svg><span>Events</span></div>
+        <div class="tab"><svg><use href="#ic-chat"/></svg><span>Chat</span></div>
+        <div class="tab"><svg><use href="#ic-user"/></svg><span>Profile</span></div>
+      </div>
+    </div>
+    <div class="cb">
+      <h3>Discover v3 — search + section header</h3>
+      <p>Rounded search bar + filter icon at top. "Near You" as section title with inline Map pill. Category chips below. Image-forward cards as before.</p>
+    </div>
+  </div>
+
+  <!-- 2. MAP SCREEN -->
+  <div class="card phone-card" data-choice="map" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="sb"><span class="time">9:41</span><span>●●●</span></div>
+      <div class="map-full">
+        <div class="map-top-bar">
+          <div class="search-bar" style="flex:1"><svg><use href="#ic-search"/></svg><span>Search events...</span></div>
+          <div class="filter-btn"><svg><use href="#ic-filter"/></svg></div>
+        </div>
+        <!-- pins -->
+        <div class="map-pin" style="top: 24%; left: 22%;"><svg><use href="#ic-fork"/></svg></div>
+        <div class="map-pin" style="top: 18%; right: 18%;"><svg><use href="#ic-ball"/></svg></div>
+        <div class="map-pin" style="top: 40%; left: 38%;"><svg><use href="#ic-dice"/></svg></div>
+        <div class="map-pin active" style="top: 48%; left: 50%; transform: translate(-50%, -50%);"><svg><use href="#ic-coffee"/></svg></div>
+        <div class="map-pin" style="bottom: 32%; left: 18%;"><svg><use href="#ic-music"/></svg></div>
+        <div class="map-pin" style="bottom: 28%; right: 22%;"><svg><use href="#ic-hike"/></svg></div>
+
+        <div class="map-list-btn"><svg><use href="#ic-list"/></svg>List view</div>
+
+        <!-- Selected pin bottom sheet -->
+        <div class="map-sheet">
+          <div class="map-sheet-drag"></div>
+          <div class="map-sheet-card">
+            <div class="map-sheet-img photo photo-coffee"></div>
+            <div class="map-sheet-body">
+              <h5>Morning coffee crawl</h5>
+              <div class="meta">
+                <span>Sun · 9:00 AM</span>
+                <span class="dot"></span>
+                <span class="slots">4 open</span>
+                <span class="dot"></span>
+                <span>0.6 mi</span>
+              </div>
+            </div>
+            <svg class="map-sheet-chev" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2"><use href="#ic-chevron"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="tab on"><svg><use href="#ic-compass"/></svg><span>Discover</span></div>
+        <div class="tab"><svg><use href="#ic-calendar"/></svg><span>Events</span></div>
+        <div class="tab"><svg><use href="#ic-chat"/></svg><span>Chat</span></div>
+        <div class="tab"><svg><use href="#ic-user"/></svg><span>Profile</span></div>
+      </div>
+    </div>
+    <div class="cb">
+      <h3>Map screen</h3>
+      <p>Full-bleed Apple MapKit with category-colored pins. Selected pin enlarges to dark. Bottom sheet shows pin details with swipeable preview. "List view" pill toggles back to feed.</p>
+    </div>
+  </div>
+
+  <!-- 3. EVENT DETAIL v3 (MODAL) -->
+  <div class="card phone-card" data-choice="detail-v3" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="modal-bg"></div>
+      <div class="modal-sheet">
+        <div class="modal-hero photo photo-ramen">
+          <div class="close-btn"><svg><use href="#ic-x"/></svg></div>
+          <div class="share-btn"><svg><use href="#ic-share"/></svg></div>
+          <div class="hero-overlay">
+            <h1>Ramen night at Ippudo</h1>
+            <div class="facepile-row">
+              <div class="facepile">
+                <div class="av fp1"></div>
+                <div class="av fp2"></div>
+                <div class="av fp3"></div>
+              </div>
+              <span class="facepile-count">2 of 4 going</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-scroll">
+          <div class="host-card">
+            <div class="host-av-lg"></div>
+            <div class="host-info">
+              <div class="by">Hosted by</div>
+              <strong>Alex Kim</strong>
+              <span class="meta"><svg><use href="#ic-star-fill"/></svg>4.8 · 18 events hosted</span>
+            </div>
+            <div class="follow-btn">Follow</div>
+          </div>
+
+          <div class="section">
+            <div class="section-head"><h3>About this event</h3></div>
+            <p>Casual weeknight ramen meetup. We'll grab a table in the back, catch up, and get a couple rounds in. New to the group? Totally welcome — <span class="read-more">read more</span></p>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="section">
+            <div class="section-head"><h3>When</h3></div>
+            <div class="when-card">
+              <div class="when-date">
+                <div class="mo">APR</div>
+                <div class="dy">16</div>
+                <div class="dow">THU</div>
+              </div>
+              <div class="when-info">
+                <strong>7:00 PM – 9:00 PM</strong>
+                <span>About 2 hours</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="section">
+            <div class="section-head">
+              <h3>Attendees (4)</h3>
+              <span class="more">See all</span>
+            </div>
+            <div class="att-row">
+              <div class="att-facepile">
+                <div class="av fp1"></div>
+                <div class="av fp2"></div>
+                <div class="av empty"><svg><use href="#ic-plus"/></svg></div>
+                <div class="av empty"><svg><use href="#ic-plus"/></svg></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-bottom-bar">
+          <div class="action-btn-circle"><svg><use href="#ic-heart"/></svg></div>
+          <div class="action-btn-circle"><svg><use href="#ic-chat"/></svg></div>
+          <div class="join-btn"><svg><use href="#ic-users"/></svg>Request to join</div>
+        </div>
+      </div>
+    </div>
+    <div class="cb">
+      <h3>Event detail (modal)</h3>
+      <p>Modal sheet with X close + share on hero. Title + facepile overlay on photo. Host card with Follow. Sections for About / When / Attendees. Sticky bottom bar: heart, chat, primary Join — always visible.</p>
+    </div>
+  </div>
+
+  <!-- 4. CREATE WIZARD -->
+  <div class="card phone-card" data-choice="create" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="sb"><span class="time">9:41</span><span>●●●</span></div>
+      <div class="wiz-top">
+        <div class="icon-btn" style="background:transparent"><svg><use href="#ic-x"/></svg></div>
+        <div class="title">Step 2 of 4</div>
+        <div class="skip" style="color:var(--muted)">Skip</div>
+      </div>
+      <div class="wiz-progress">
+        <div class="seg on"></div>
+        <div class="seg on"></div>
+        <div class="seg"></div>
+        <div class="seg"></div>
+      </div>
+      <div class="wiz-body">
+        <h2>What kind of event?</h2>
+        <div class="sub">This sets the category icon and filters who sees it.</div>
+        <div class="cat-grid">
+          <div class="cat-tile sel">
+            <svg><use href="#ic-fork"/></svg>
+            <div class="nm">Dining</div>
+          </div>
+          <div class="cat-tile">
+            <svg><use href="#ic-coffee"/></svg>
+            <div class="nm">Coffee & Drinks</div>
+          </div>
+          <div class="cat-tile">
+            <svg><use href="#ic-ball"/></svg>
+            <div class="nm">Sports</div>
+          </div>
+          <div class="cat-tile">
+            <svg><use href="#ic-hike"/></svg>
+            <div class="nm">Outdoors</div>
+          </div>
+          <div class="cat-tile">
+            <svg><use href="#ic-dice"/></svg>
+            <div class="nm">Games</div>
+          </div>
+          <div class="cat-tile">
+            <svg><use href="#ic-music"/></svg>
+            <div class="nm">Music & Arts</div>
+          </div>
+          <div class="cat-tile">
+            <svg><use href="#ic-cam"/></svg>
+            <div class="nm">Creative</div>
+          </div>
+          <div class="cat-tile">
+            <svg><use href="#ic-users"/></svg>
+            <div class="nm">Just hang out</div>
+          </div>
+        </div>
+      </div>
+      <div class="wiz-bottom">
+        <div class="next-btn">Continue</div>
+      </div>
+    </div>
+    <div class="cb">
+      <h3>Create event — wizard step</h3>
+      <p>Modal with X to close. Segmented progress bar, step counter. Large tappable category tiles (88pt+ min). Sticky Continue CTA.</p>
+    </div>
+  </div>
+
+  <!-- 5. CHAT -->
+  <div class="card phone-card" data-choice="chat" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="sb"><span class="time">9:41</span><span>●●●</span></div>
+      <div class="hdr" style="padding: 10px 20px 12px; display:flex; align-items:center; justify-content:space-between;">
+        <h1 style="margin:0; font-size:28px; font-weight:700; letter-spacing:-0.03em; color:var(--ink);">Chats</h1>
+        <div class="icon-btn"><svg><use href="#ic-plus"/></svg></div>
+      </div>
+      <div class="chat-tab-toggle">
+        <div class="cseg on">Events</div>
+        <div class="cseg">Direct</div>
+      </div>
+      <div class="chat-list">
+        <div class="chat-row">
+          <div class="chat-av"><svg><use href="#ic-fork"/></svg></div>
+          <div class="chat-body">
+            <div class="chat-head"><h5>Ramen at Ippudo</h5><span class="t">2m</span></div>
+            <div class="chat-preview unread">Alex: running 5 min late</div>
+          </div>
+          <span class="unread-dot"></span>
+        </div>
+        <div class="chat-row">
+          <div class="chat-av"><svg><use href="#ic-ball"/></svg></div>
+          <div class="chat-body">
+            <div class="chat-head"><h5>Soccer pickup – GG Park</h5><span class="t">1h</span></div>
+            <div class="chat-preview">Maya: who's bringing cleats?</div>
+          </div>
+        </div>
+        <div class="chat-row">
+          <div class="chat-av"><svg><use href="#ic-dice"/></svg></div>
+          <div class="chat-body">
+            <div class="chat-head"><h5>Board game night</h5><span class="t">3h</span></div>
+            <div class="chat-preview">You: sounds good, see you Wed</div>
+          </div>
+        </div>
+        <div class="chat-row">
+          <div class="chat-av"><svg><use href="#ic-coffee"/></svg></div>
+          <div class="chat-body">
+            <div class="chat-head"><h5>Coffee crawl Sun</h5><span class="t">Yesterday</span></div>
+            <div class="chat-preview">Sam: added two new cafes</div>
+          </div>
+        </div>
+        <div class="chat-row">
+          <div class="chat-av"><svg><use href="#ic-hike"/></svg></div>
+          <div class="chat-body">
+            <div class="chat-head"><h5>Bernal hike Sat</h5><span class="t">Mon</span></div>
+            <div class="chat-preview">Jordan: trailhead at 9</div>
+          </div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><svg><use href="#ic-compass"/></svg><span>Discover</span></div>
+        <div class="tab"><svg><use href="#ic-calendar"/></svg><span>Events</span></div>
+        <div class="tab on"><svg><use href="#ic-chat"/></svg><span>Chat</span></div>
+        <div class="tab"><svg><use href="#ic-user"/></svg><span>Profile</span></div>
+      </div>
+    </div>
+    <div class="cb">
+      <h3>Chat list</h3>
+      <p>52pt avatars, 64pt+ rows. Event chats use category glyph on purple tint (not rainbow). Segmented Events/Direct toggle at HIG-compliant 44pt.</p>
+    </div>
+  </div>
+
+  <!-- 6. PROFILE -->
+  <div class="card phone-card" data-choice="profile" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="sb"><span class="time">9:41</span><span>●●●</span></div>
+      <div class="hdr" style="padding: 10px 20px 2px; display:flex; align-items:center; justify-content:space-between;">
+        <h1 style="margin:0; font-size:28px; font-weight:700; letter-spacing:-0.03em; color:var(--ink);">Profile</h1>
+        <div class="icon-btn"><svg><use href="#ic-filter"/></svg></div>
+      </div>
+      <div class="prof-hero">
+        <div class="prof-av">SN</div>
+        <div class="prof-name">Sam Nichols</div>
+        <div class="prof-bio">Board games, ramen, long hikes. Usually late.</div>
+        <div class="prof-rating-row">
+          <svg><use href="#ic-star-fill"/></svg>
+          <strong>4.8</strong>
+          <span class="dot"></span>
+          <span>24 events</span>
+          <span class="dot"></span>
+          <span>12 friends</span>
+        </div>
+      </div>
+      <div class="prof-stats">
+        <div class="stat"><strong>24</strong><span>Events</span></div>
+        <div class="stat"><strong>12</strong><span>Friends</span></div>
+        <div class="stat"><strong>6</strong><span>Hosted</span></div>
+      </div>
+      <div class="traits-wrap">
+        <h4>Traits</h4>
+        <span class="trait-chip star">Reliable</span>
+        <span class="trait-chip star">Great host</span>
+        <span class="trait-chip">Fun energy</span>
+        <span class="trait-chip">On time</span>
+      </div>
+      <div class="traits-wrap">
+        <h4>Badges</h4>
+      </div>
+      <div class="badges-row">
+        <div class="badge-tile"><svg><use href="#ic-trophy"/></svg></div>
+        <div class="badge-tile"><svg><use href="#ic-users"/></svg></div>
+        <div class="badge-tile"><svg><use href="#ic-gift"/></svg></div>
+        <div class="badge-tile locked"><svg><use href="#ic-lock"/></svg></div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><svg><use href="#ic-compass"/></svg><span>Discover</span></div>
+        <div class="tab"><svg><use href="#ic-calendar"/></svg><span>Events</span></div>
+        <div class="tab"><svg><use href="#ic-chat"/></svg><span>Chat</span></div>
+        <div class="tab on"><svg><use href="#ic-user"/></svg><span>Profile</span></div>
+      </div>
+    </div>
+    <div class="cb">
+      <h3>Profile</h3>
+      <p>86pt avatar, rating + stats inline. "Star" traits (prominent tier) rendered as dark chips with amber star. Badges in a purple-tinted grid with locked state for unearned. No rainbow.</p>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top: 22px; padding: 14px 18px; background: #F7F7F9; border-radius: 12px; font-size: 13px; color: #444; line-height: 1.55; max-width: 1200px; margin-left: auto; margin-right: auto;">
+  <strong>What changed this round:</strong>
+  <ul style="margin: 8px 0 0; padding-left: 20px;">
+    <li>Discover: rounded search + filter at top, "Near You" section with inline Map pill (per your reference)</li>
+    <li>New Map screen: full-bleed MapKit with category pins, List view toggle, bottom sheet for selected pin</li>
+    <li>Event Detail: now modal (X instead of back), facepile overlaid on hero, Host card with Follow button, sticky bottom bar with heart/chat/Join actions</li>
+    <li>Create, Chat, Profile: restyled to the same palette — no rainbow avatars, consistent purple tint</li>
+  </ul>
+  <br/>
+  If this is right, I'll write the design spec covering all nine flows (+ rating wizard, notifications, DM thread — which I can sketch later or just describe in the spec).
+</div>

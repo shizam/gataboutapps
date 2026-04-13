@@ -1,8 +1,8 @@
-# gatabout iOS App — Architecture Design Spec
+# bunchabout iOS App — Architecture Design Spec
 
 ## Overview
 
-Native iOS app for the gatabout (lfourg) social activity coordination platform. Users create and join local events, discover activities via a location-aware feed, coordinate with other participants, and build social trust through ratings and badges.
+Native iOS app for the bunchabout social activity coordination platform. Users create and join local events, discover activities via a location-aware feed, coordinate with other participants, and build social trust through ratings and badges.
 
 This spec covers the foundational architecture and first two milestones: authentication and the event feed.
 
@@ -53,7 +53,7 @@ Standard SwiftUI views. They observe their ViewModel and read display data. No b
 A single class handling all HTTP communication:
 
 - Takes a query string + optional `[String: Any]` variables dictionary
-- POSTs to `https://lfourg-a6fe3.web.app/graphql`
+- POSTs to `https://bunchabout.web.app/graphql`
 - Injects Firebase ID token via `Authorization: Bearer <token>` header
 - Decodes the `{ "data": ... }` envelope
 - Surfaces `{ "errors": ... }` as typed Swift errors
@@ -183,11 +183,11 @@ Each tab owns its own `NavigationStack`. Event detail pushes onto whichever tab'
 
 ### Dependency Injection
 
-Repositories and AuthService created once in `gataboutApp` and injected via `.environment()`:
+Repositories and AuthService created once in `bunchaboutApp` and injected via `.environment()`:
 
 ```swift
 @main
-struct gataboutApp: App {
+struct bunchaboutApp: App {
     let authService = AuthService()
     let graphQLClient: GraphQLClient
     let userRepository: UserRepository
@@ -213,9 +213,9 @@ struct gataboutApp: App {
 ## Project Structure
 
 ```
-gatabout/
+bunchabout/
   App/
-    gataboutApp.swift
+    bunchaboutApp.swift
     RootView.swift
     MainTabView.swift
 

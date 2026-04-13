@@ -1,4 +1,4 @@
-# gatabout iOS — Auth & Feed Implementation Plan
+# bunchabout iOS — Auth & Feed Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -13,9 +13,9 @@
 ## File Map
 
 ```
-gatabout/gatabout/
+bunchabout/bunchabout/
   App/
-    gataboutApp.swift              ← modify (DI setup, FirebaseApp.configure)
+    bunchaboutApp.swift              ← modify (DI setup, FirebaseApp.configure)
     RootView.swift                 ← create
     MainTabView.swift              ← create
   Core/
@@ -77,7 +77,7 @@ gatabout/gatabout/
 
   ContentView.swift                ← delete
 
-gatabout/gataboutTests/
+bunchabout/bunchaboutTests/
   Helpers/
     MockURLProtocol.swift          ← create
     MockAuthService.swift          ← create
@@ -88,7 +88,7 @@ gatabout/gataboutTests/
   EventRepositoryTests.swift       ← create
   LoginViewModelTests.swift        ← create
   FeedViewModelTests.swift         ← create
-  gataboutTests.swift              ← delete (old XCTest template)
+  bunchaboutTests.swift              ← delete (old XCTest template)
 ```
 
 ---
@@ -96,18 +96,18 @@ gatabout/gataboutTests/
 ### Task 1: Project Setup & Firebase Configuration
 
 **Files:**
-- Copy: `~/Downloads/GoogleService-Info.plist` → `gatabout/gatabout/GoogleService-Info.plist`
-- Create: folder structure under `gatabout/gatabout/`
-- Delete: `gatabout/gatabout/ContentView.swift`
-- Delete: `gatabout/gataboutTests/gataboutTests.swift`
+- Copy: `~/Downloads/GoogleService-Info.plist` → `bunchabout/bunchabout/GoogleService-Info.plist`
+- Create: folder structure under `bunchabout/bunchabout/`
+- Delete: `bunchabout/bunchabout/ContentView.swift`
+- Delete: `bunchabout/bunchaboutTests/bunchaboutTests.swift`
 
 - [ ] **Step 1: Add Firebase Auth via CocoaPods (minimal dependencies)**
 
-Create `gatabout/Podfile`:
+Create `bunchabout/Podfile`:
 ```ruby
 platform :ios, '26.0'
 
-target 'gatabout' do
+target 'bunchabout' do
   use_frameworks!
 
   pod 'FirebaseAuth', '~> 11.0'
@@ -127,42 +127,42 @@ end
 
 Then install:
 ```bash
-cd gatabout && pod install
+cd bunchabout && pod install
 ```
 
-**IMPORTANT:** After `pod install`, always open `gatabout.xcworkspace` (NOT `.xcodeproj`).
+**IMPORTANT:** After `pod install`, always open `bunchabout.xcworkspace` (NOT `.xcodeproj`).
 
 Also set `FirebaseAnalyticsWithoutAdIdSupport` to avoid pulling in the full Analytics SDK. We only need `FirebaseAuth` — no Analytics, no Crashlytics, no Cloud Messaging.
 
 - [ ] **Step 2: Copy GoogleService-Info.plist and create folder structure**
 
 ```bash
-cp ~/Downloads/GoogleService-Info.plist gatabout/gatabout/GoogleService-Info.plist
-mkdir -p gatabout/gatabout/{App,Core/{Networking,Auth,Theme,Location},Models/Enums,Repositories,Features/{Login,Feed,EventDetail,Profile},Extensions}
-mkdir -p gatabout/gataboutTests/Helpers
+cp ~/Downloads/GoogleService-Info.plist bunchabout/bunchabout/GoogleService-Info.plist
+mkdir -p bunchabout/bunchabout/{App,Core/{Networking,Auth,Theme,Location},Models/Enums,Repositories,Features/{Login,Feed,EventDetail,Profile},Extensions}
+mkdir -p bunchabout/bunchaboutTests/Helpers
 ```
 
 - [ ] **Step 3: Delete starter files**
 
 ```bash
-rm gatabout/gatabout/ContentView.swift
-rm gatabout/gataboutTests/gataboutTests.swift
+rm bunchabout/bunchabout/ContentView.swift
+rm bunchabout/bunchaboutTests/bunchaboutTests.swift
 ```
 
 - [ ] **Step 4: Add location permission description**
 
-In Xcode: select **gatabout** target → **Info** tab → click **+** → add key:
+In Xcode: select **bunchabout** target → **Info** tab → click **+** → add key:
 - Key: `NSLocationWhenInUseUsageDescription`
-- Value: `gatabout needs your location to find events near you`
+- Value: `bunchabout needs your location to find events near you`
 
 - [ ] **Step 5: Add .gitignore for Pods**
 
-Create `.gitignore` in `gatabout/` (or repo root):
+Create `.gitignore` in `bunchabout/` (or repo root):
 ```
 # CocoaPods
 Pods/
 *.xcworkspace
-!gatabout.xcworkspace
+!bunchabout.xcworkspace
 ```
 
 Note: Some teams check in Pods/, some don't. We'll ignore them to keep the repo small.
@@ -179,14 +179,14 @@ git commit -m "chore: project setup with Firebase Auth (CocoaPods), folder struc
 ### Task 2: Theme Constants
 
 **Files:**
-- Create: `gatabout/gatabout/Core/Theme/Sizes.swift`
-- Create: `gatabout/gatabout/Core/Theme/AppColors.swift`
-- Create: `gatabout/gatabout/Core/Theme/AppTypography.swift`
+- Create: `bunchabout/bunchabout/Core/Theme/Sizes.swift`
+- Create: `bunchabout/bunchabout/Core/Theme/AppColors.swift`
+- Create: `bunchabout/bunchabout/Core/Theme/AppTypography.swift`
 
 - [ ] **Step 1: Create Sizes.swift**
 
 ```swift
-// gatabout/gatabout/Core/Theme/Sizes.swift
+// bunchabout/bunchabout/Core/Theme/Sizes.swift
 import SwiftUI
 
 enum Sizes {
@@ -224,7 +224,7 @@ enum Sizes {
 - [ ] **Step 2: Create AppColors.swift**
 
 ```swift
-// gatabout/gatabout/Core/Theme/AppColors.swift
+// bunchabout/bunchabout/Core/Theme/AppColors.swift
 import SwiftUI
 
 enum AppColors {
@@ -239,7 +239,7 @@ enum AppColors {
 - [ ] **Step 3: Create AppTypography.swift**
 
 ```swift
-// gatabout/gatabout/Core/Theme/AppTypography.swift
+// bunchabout/bunchabout/Core/Theme/AppTypography.swift
 import SwiftUI
 
 struct TitleLargeStyle: ViewModifier {
@@ -279,7 +279,7 @@ extension View {
 - [ ] **Step 4: Commit**
 
 ```bash
-git add gatabout/gatabout/Core/Theme/
+git add bunchabout/bunchabout/Core/Theme/
 git commit -m "feat: add theme constants — Sizes, AppColors, AppTypography"
 ```
 
@@ -288,16 +288,16 @@ git commit -m "feat: add theme constants — Sizes, AppColors, AppTypography"
 ### Task 3: Error Types & GraphQL Client
 
 **Files:**
-- Create: `gatabout/gatabout/Core/Networking/AppError.swift`
-- Create: `gatabout/gatabout/Core/Networking/GraphQLClient.swift`
-- Create: `gatabout/gataboutTests/Helpers/MockURLProtocol.swift`
-- Create: `gatabout/gataboutTests/Helpers/TestHelpers.swift`
-- Create: `gatabout/gataboutTests/GraphQLClientTests.swift`
+- Create: `bunchabout/bunchabout/Core/Networking/AppError.swift`
+- Create: `bunchabout/bunchabout/Core/Networking/GraphQLClient.swift`
+- Create: `bunchabout/bunchaboutTests/Helpers/MockURLProtocol.swift`
+- Create: `bunchabout/bunchaboutTests/Helpers/TestHelpers.swift`
+- Create: `bunchabout/bunchaboutTests/GraphQLClientTests.swift`
 
 - [ ] **Step 1: Create AppError.swift**
 
 ```swift
-// gatabout/gatabout/Core/Networking/AppError.swift
+// bunchabout/bunchabout/Core/Networking/AppError.swift
 import Foundation
 
 enum AppError: Error, LocalizedError {
@@ -324,7 +324,7 @@ enum AppError: Error, LocalizedError {
 - [ ] **Step 2: Create MockURLProtocol and test helpers**
 
 ```swift
-// gatabout/gataboutTests/Helpers/MockURLProtocol.swift
+// bunchabout/bunchaboutTests/Helpers/MockURLProtocol.swift
 import Foundation
 
 final class MockURLProtocol: URLProtocol, @unchecked Sendable {
@@ -352,9 +352,9 @@ final class MockURLProtocol: URLProtocol, @unchecked Sendable {
 ```
 
 ```swift
-// gatabout/gataboutTests/Helpers/TestHelpers.swift
+// bunchabout/bunchaboutTests/Helpers/TestHelpers.swift
 import Foundation
-@testable import gatabout
+@testable import bunchabout
 
 func makeMockSession() -> URLSession {
     let config = URLSessionConfiguration.ephemeral
@@ -384,10 +384,10 @@ func mockResponse(json: String, statusCode: Int = 200) -> (HTTPURLResponse, Data
 - [ ] **Step 3: Write GraphQLClient tests**
 
 ```swift
-// gatabout/gataboutTests/GraphQLClientTests.swift
+// bunchabout/bunchaboutTests/GraphQLClientTests.swift
 import Testing
 import Foundation
-@testable import gatabout
+@testable import bunchabout
 
 @Suite(.serialized)
 @MainActor
@@ -497,7 +497,7 @@ private extension Data {
 - [ ] **Step 4: Run tests to verify they fail**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:gataboutTests/GraphQLClientTests 2>&1 | tail -20
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:bunchaboutTests/GraphQLClientTests 2>&1 | tail -20
 ```
 
 Expected: Build failure — `GraphQLClient` and `User` types do not exist yet.
@@ -505,7 +505,7 @@ Expected: Build failure — `GraphQLClient` and `User` types do not exist yet.
 - [ ] **Step 5: Create GraphQLClient.swift**
 
 ```swift
-// gatabout/gatabout/Core/Networking/GraphQLClient.swift
+// bunchabout/bunchabout/Core/Networking/GraphQLClient.swift
 import Foundation
 
 final class GraphQLClient {
@@ -514,7 +514,7 @@ final class GraphQLClient {
     private let getToken: () async throws -> String
 
     init(
-        url: URL = URL(string: "https://lfourg-a6fe3.web.app/graphql")!,
+        url: URL = URL(string: "https://bunchabout.web.app/graphql")!,
         session: URLSession = .shared,
         getToken: @escaping () async throws -> String
     ) {
@@ -597,7 +597,7 @@ struct GraphQLError: Decodable {
 Create a temporary minimal `User` struct (will be expanded in Task 5):
 
 ```swift
-// gatabout/gatabout/Models/User.swift
+// bunchabout/bunchabout/Models/User.swift
 import Foundation
 
 struct User: Codable, Identifiable, Hashable {
@@ -616,7 +616,7 @@ struct User: Codable, Identifiable, Hashable {
 - [ ] **Step 7: Run tests to verify they pass**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:gataboutTests/GraphQLClientTests 2>&1 | tail -30
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:bunchaboutTests/GraphQLClientTests 2>&1 | tail -30
 ```
 
 Expected: All 4 tests PASS.
@@ -633,15 +633,15 @@ git commit -m "feat: add GraphQLClient with URLSession, AppError, and tests"
 ### Task 4: Auth Service
 
 **Files:**
-- Create: `gatabout/gatabout/Core/Auth/AuthState.swift`
-- Create: `gatabout/gatabout/Core/Auth/AuthServiceProtocol.swift`
-- Create: `gatabout/gatabout/Core/Auth/AuthService.swift`
-- Create: `gatabout/gataboutTests/Helpers/MockAuthService.swift`
+- Create: `bunchabout/bunchabout/Core/Auth/AuthState.swift`
+- Create: `bunchabout/bunchabout/Core/Auth/AuthServiceProtocol.swift`
+- Create: `bunchabout/bunchabout/Core/Auth/AuthService.swift`
+- Create: `bunchabout/bunchaboutTests/Helpers/MockAuthService.swift`
 
 - [ ] **Step 1: Create AuthState.swift**
 
 ```swift
-// gatabout/gatabout/Core/Auth/AuthState.swift
+// bunchabout/bunchabout/Core/Auth/AuthState.swift
 
 enum AuthState {
     case unknown
@@ -653,7 +653,7 @@ enum AuthState {
 - [ ] **Step 2: Create AuthServiceProtocol.swift**
 
 ```swift
-// gatabout/gatabout/Core/Auth/AuthServiceProtocol.swift
+// bunchabout/bunchabout/Core/Auth/AuthServiceProtocol.swift
 
 protocol AuthServiceProtocol: AnyObject {
     func signIn(email: String, password: String) async throws
@@ -666,7 +666,7 @@ protocol AuthServiceProtocol: AnyObject {
 - [ ] **Step 3: Create AuthService.swift**
 
 ```swift
-// gatabout/gatabout/Core/Auth/AuthService.swift
+// bunchabout/bunchabout/Core/Auth/AuthService.swift
 import FirebaseAuth
 
 @Observable
@@ -714,9 +714,9 @@ final class AuthService: AuthServiceProtocol {
 - [ ] **Step 4: Create MockAuthService for tests**
 
 ```swift
-// gatabout/gataboutTests/Helpers/MockAuthService.swift
+// bunchabout/bunchaboutTests/Helpers/MockAuthService.swift
 import Foundation
-@testable import gatabout
+@testable import bunchabout
 
 final class MockAuthService: AuthServiceProtocol {
     var shouldFail = false
@@ -763,16 +763,16 @@ git commit -m "feat: add AuthService with FirebaseAuth, protocol, and test mock"
 ### Task 5: Models & Enums
 
 **Files:**
-- Create: all files in `gatabout/gatabout/Models/Enums/`
-- Modify: `gatabout/gatabout/Models/User.swift` (expand from minimal version)
-- Create: remaining model files in `gatabout/gatabout/Models/`
-- Create: `gatabout/gatabout/Extensions/Date+Extensions.swift`
-- Create: `gatabout/gataboutTests/ModelDecodingTests.swift`
+- Create: all files in `bunchabout/bunchabout/Models/Enums/`
+- Modify: `bunchabout/bunchabout/Models/User.swift` (expand from minimal version)
+- Create: remaining model files in `bunchabout/bunchabout/Models/`
+- Create: `bunchabout/bunchabout/Extensions/Date+Extensions.swift`
+- Create: `bunchabout/bunchaboutTests/ModelDecodingTests.swift`
 
 - [ ] **Step 1: Create all enum files**
 
 ```swift
-// gatabout/gatabout/Models/Enums/ActivityCategory.swift
+// bunchabout/bunchabout/Models/Enums/ActivityCategory.swift
 enum ActivityCategory: String, Codable, CaseIterable {
     case dinner = "DINNER"
     case coffee = "COFFEE"
@@ -830,7 +830,7 @@ enum ActivityCategory: String, Codable, CaseIterable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/Enums/EventStatus.swift
+// bunchabout/bunchabout/Models/Enums/EventStatus.swift
 enum EventStatus: String, Codable {
     case open = "OPEN"
     case full = "FULL"
@@ -841,7 +841,7 @@ enum EventStatus: String, Codable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/Enums/ParticipantStatus.swift
+// bunchabout/bunchabout/Models/Enums/ParticipantStatus.swift
 enum ParticipantStatus: String, Codable {
     case invited = "INVITED"
     case requested = "REQUESTED"
@@ -854,7 +854,7 @@ enum ParticipantStatus: String, Codable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/Enums/FillMode.swift
+// bunchabout/bunchabout/Models/Enums/FillMode.swift
 enum FillMode: String, Codable {
     case firstComeFirstServed = "FIRST_COME_FIRST_SERVED"
     case approvalRequired = "APPROVAL_REQUIRED"
@@ -862,7 +862,7 @@ enum FillMode: String, Codable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/Enums/Visibility.swift
+// bunchabout/bunchabout/Models/Enums/Visibility.swift
 enum Visibility: String, Codable {
     case `public` = "PUBLIC"
     case friendsOnly = "FRIENDS_ONLY"
@@ -870,7 +870,7 @@ enum Visibility: String, Codable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/Enums/SlotType.swift
+// bunchabout/bunchabout/Models/Enums/SlotType.swift
 enum SlotType: String, Codable {
     case organizer = "ORGANIZER"
     case friend = "FRIEND"
@@ -879,7 +879,7 @@ enum SlotType: String, Codable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/Enums/FeedSort.swift
+// bunchabout/bunchabout/Models/Enums/FeedSort.swift
 enum FeedSort: String, Codable {
     case score = "SCORE"
     case date = "DATE"
@@ -888,7 +888,7 @@ enum FeedSort: String, Codable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/Enums/Gender.swift
+// bunchabout/bunchabout/Models/Enums/Gender.swift
 enum Gender: String, Codable {
     case male = "MALE"
     case female = "FEMALE"
@@ -900,7 +900,7 @@ enum Gender: String, Codable {
 - [ ] **Step 2: Create supporting model types**
 
 ```swift
-// gatabout/gatabout/Models/Trait.swift
+// bunchabout/bunchabout/Models/Trait.swift
 struct Trait: Codable, Hashable {
     let name: String
     let tier: TraitTier
@@ -913,7 +913,7 @@ struct Trait: Codable, Hashable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/Badge.swift
+// bunchabout/bunchabout/Models/Badge.swift
 struct Badge: Codable, Identifiable, Hashable {
     let id: String
     let name: String
@@ -923,7 +923,7 @@ struct Badge: Codable, Identifiable, Hashable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/EventLocation.swift
+// bunchabout/bunchabout/Models/EventLocation.swift
 struct EventLocation: Codable, Hashable {
     let name: String
     var address: String?
@@ -935,7 +935,7 @@ struct EventLocation: Codable, Hashable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/EventParticipant.swift
+// bunchabout/bunchabout/Models/EventParticipant.swift
 struct EventParticipant: Codable, Identifiable {
     let user: User
     let status: ParticipantStatus
@@ -947,7 +947,7 @@ struct EventParticipant: Codable, Identifiable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/Venue.swift
+// bunchabout/bunchabout/Models/Venue.swift
 struct Venue: Codable, Identifiable, Hashable {
     let placeId: String
     let displayName: String
@@ -964,7 +964,7 @@ struct VenuePhoto: Codable, Hashable {
 ```
 
 ```swift
-// gatabout/gatabout/Models/EventConnection.swift
+// bunchabout/bunchabout/Models/EventConnection.swift
 struct EventConnection: Codable {
     let edges: [EventEdge]
     let pageInfo: PageInfo
@@ -986,7 +986,7 @@ struct PageInfo: Codable {
 Replace the minimal User model:
 
 ```swift
-// gatabout/gatabout/Models/User.swift
+// bunchabout/bunchabout/Models/User.swift
 import Foundation
 
 struct User: Codable, Identifiable, Hashable {
@@ -1009,7 +1009,7 @@ struct User: Codable, Identifiable, Hashable {
 - [ ] **Step 4: Create Event.swift**
 
 ```swift
-// gatabout/gatabout/Models/Event.swift
+// bunchabout/bunchabout/Models/Event.swift
 import Foundation
 
 struct Event: Codable, Identifiable, Hashable {
@@ -1040,7 +1040,7 @@ struct Event: Codable, Identifiable, Hashable {
 - [ ] **Step 5: Create Date+Extensions.swift**
 
 ```swift
-// gatabout/gatabout/Extensions/Date+Extensions.swift
+// bunchabout/bunchabout/Extensions/Date+Extensions.swift
 import Foundation
 
 extension String {
@@ -1071,10 +1071,10 @@ extension Date {
 - [ ] **Step 6: Write model decoding tests**
 
 ```swift
-// gatabout/gataboutTests/ModelDecodingTests.swift
+// bunchabout/bunchaboutTests/ModelDecodingTests.swift
 import Testing
 import Foundation
-@testable import gatabout
+@testable import bunchabout
 
 @Suite
 struct ModelDecodingTests {
@@ -1194,7 +1194,7 @@ struct ModelDecodingTests {
 - [ ] **Step 7: Run tests**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:gataboutTests/ModelDecodingTests 2>&1 | tail -20
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:bunchaboutTests/ModelDecodingTests 2>&1 | tail -20
 ```
 
 Expected: All tests PASS.
@@ -1211,17 +1211,17 @@ git commit -m "feat: add all model types, enums, and decoding tests"
 ### Task 6: User Repository & Queries
 
 **Files:**
-- Create: `gatabout/gatabout/Repositories/UserQueries.swift`
-- Create: `gatabout/gatabout/Repositories/UserRepository.swift`
-- Create: `gatabout/gataboutTests/UserRepositoryTests.swift`
+- Create: `bunchabout/bunchabout/Repositories/UserQueries.swift`
+- Create: `bunchabout/bunchabout/Repositories/UserRepository.swift`
+- Create: `bunchabout/bunchaboutTests/UserRepositoryTests.swift`
 
 - [ ] **Step 1: Write UserRepository tests**
 
 ```swift
-// gatabout/gataboutTests/UserRepositoryTests.swift
+// bunchabout/bunchaboutTests/UserRepositoryTests.swift
 import Testing
 import Foundation
-@testable import gatabout
+@testable import bunchabout
 
 @Suite(.serialized)
 @MainActor
@@ -1282,7 +1282,7 @@ struct UserRepositoryTests {
 - [ ] **Step 2: Run tests to verify they fail**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:gataboutTests/UserRepositoryTests 2>&1 | tail -20
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:bunchaboutTests/UserRepositoryTests 2>&1 | tail -20
 ```
 
 Expected: Build failure — `UserRepository` does not exist yet.
@@ -1290,7 +1290,7 @@ Expected: Build failure — `UserRepository` does not exist yet.
 - [ ] **Step 3: Create UserQueries.swift**
 
 ```swift
-// gatabout/gatabout/Repositories/UserQueries.swift
+// bunchabout/bunchabout/Repositories/UserQueries.swift
 
 enum UserQueries {
     static let me = """
@@ -1373,7 +1373,7 @@ enum UserMutations {
 - [ ] **Step 4: Create UserRepository.swift**
 
 ```swift
-// gatabout/gatabout/Repositories/UserRepository.swift
+// bunchabout/bunchabout/Repositories/UserRepository.swift
 import Foundation
 
 @Observable
@@ -1423,7 +1423,7 @@ final class UserRepository {
 - [ ] **Step 5: Run tests**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:gataboutTests/UserRepositoryTests 2>&1 | tail -20
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:bunchaboutTests/UserRepositoryTests 2>&1 | tail -20
 ```
 
 Expected: All 3 tests PASS.
@@ -1440,17 +1440,17 @@ git commit -m "feat: add UserRepository with caching, queries, and tests"
 ### Task 7: Event Repository & Queries
 
 **Files:**
-- Create: `gatabout/gatabout/Repositories/EventQueries.swift`
-- Create: `gatabout/gatabout/Repositories/EventRepository.swift`
-- Create: `gatabout/gataboutTests/EventRepositoryTests.swift`
+- Create: `bunchabout/bunchabout/Repositories/EventQueries.swift`
+- Create: `bunchabout/bunchabout/Repositories/EventRepository.swift`
+- Create: `bunchabout/bunchaboutTests/EventRepositoryTests.swift`
 
 - [ ] **Step 1: Write EventRepository tests**
 
 ```swift
-// gatabout/gataboutTests/EventRepositoryTests.swift
+// bunchabout/bunchaboutTests/EventRepositoryTests.swift
 import Testing
 import Foundation
-@testable import gatabout
+@testable import bunchabout
 
 @Suite(.serialized)
 @MainActor
@@ -1529,7 +1529,7 @@ struct EventRepositoryTests {
 - [ ] **Step 2: Run tests to verify they fail**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:gataboutTests/EventRepositoryTests 2>&1 | tail -20
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:bunchaboutTests/EventRepositoryTests 2>&1 | tail -20
 ```
 
 Expected: Build failure — `EventRepository` does not exist yet.
@@ -1537,7 +1537,7 @@ Expected: Build failure — `EventRepository` does not exist yet.
 - [ ] **Step 3: Create EventQueries.swift**
 
 ```swift
-// gatabout/gatabout/Repositories/EventQueries.swift
+// bunchabout/bunchabout/Repositories/EventQueries.swift
 
 enum EventQueries {
     static let feed = """
@@ -1628,7 +1628,7 @@ enum EventQueries {
 - [ ] **Step 4: Create EventRepository.swift**
 
 ```swift
-// gatabout/gatabout/Repositories/EventRepository.swift
+// bunchabout/bunchabout/Repositories/EventRepository.swift
 import Foundation
 
 @Observable
@@ -1695,7 +1695,7 @@ final class EventRepository {
 - [ ] **Step 5: Run tests**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:gataboutTests/EventRepositoryTests 2>&1 | tail -20
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:bunchaboutTests/EventRepositoryTests 2>&1 | tail -20
 ```
 
 Expected: All 3 tests PASS.
@@ -1712,20 +1712,20 @@ git commit -m "feat: add EventRepository with feed pagination, caching, and test
 ### Task 8: App Shell & Root Navigation
 
 **Files:**
-- Modify: `gatabout/gatabout/App/gataboutApp.swift`
-- Create: `gatabout/gatabout/App/RootView.swift`
-- Create: `gatabout/gatabout/App/MainTabView.swift`
-- Create: `gatabout/gatabout/Features/Profile/ProfileView.swift`
+- Modify: `bunchabout/bunchabout/App/bunchaboutApp.swift`
+- Create: `bunchabout/bunchabout/App/RootView.swift`
+- Create: `bunchabout/bunchabout/App/MainTabView.swift`
+- Create: `bunchabout/bunchabout/Features/Profile/ProfileView.swift`
 
-- [ ] **Step 1: Update gataboutApp.swift**
+- [ ] **Step 1: Update bunchaboutApp.swift**
 
 ```swift
-// gatabout/gatabout/App/gataboutApp.swift
+// bunchabout/bunchabout/App/bunchaboutApp.swift
 import SwiftUI
 import FirebaseCore
 
 @main
-struct gataboutApp: App {
+struct bunchaboutApp: App {
     let authService: AuthService
     let graphQLClient: GraphQLClient
     let userRepository: UserRepository
@@ -1760,7 +1760,7 @@ struct gataboutApp: App {
 - [ ] **Step 2: Create RootView.swift**
 
 ```swift
-// gatabout/gatabout/App/RootView.swift
+// bunchabout/bunchabout/App/RootView.swift
 import SwiftUI
 
 struct RootView: View {
@@ -1793,7 +1793,7 @@ struct RootView: View {
 - [ ] **Step 3: Create MainTabView.swift**
 
 ```swift
-// gatabout/gatabout/App/MainTabView.swift
+// bunchabout/bunchabout/App/MainTabView.swift
 import SwiftUI
 
 struct MainTabView: View {
@@ -1824,7 +1824,7 @@ struct MainTabView: View {
 - [ ] **Step 4: Create placeholder ProfileView.swift**
 
 ```swift
-// gatabout/gatabout/Features/Profile/ProfileView.swift
+// bunchabout/bunchabout/Features/Profile/ProfileView.swift
 import SwiftUI
 
 struct ProfileView: View {
@@ -1868,21 +1868,21 @@ git commit -m "feat: add app shell with RootView, MainTabView, and auth-gated na
 ### Task 9: Login Feature
 
 **Files:**
-- Create: `gatabout/gatabout/Features/Login/LoginViewModel.swift`
-- Create: `gatabout/gatabout/Features/Login/LoginView.swift`
-- Create: `gatabout/gatabout/Features/Login/SignUpViewModel.swift`
-- Create: `gatabout/gatabout/Features/Login/SignUpView.swift`
-- Create: `gatabout/gatabout/Features/Login/ForgotPasswordViewModel.swift`
-- Create: `gatabout/gatabout/Features/Login/ForgotPasswordView.swift`
-- Create: `gatabout/gataboutTests/LoginViewModelTests.swift`
+- Create: `bunchabout/bunchabout/Features/Login/LoginViewModel.swift`
+- Create: `bunchabout/bunchabout/Features/Login/LoginView.swift`
+- Create: `bunchabout/bunchabout/Features/Login/SignUpViewModel.swift`
+- Create: `bunchabout/bunchabout/Features/Login/SignUpView.swift`
+- Create: `bunchabout/bunchabout/Features/Login/ForgotPasswordViewModel.swift`
+- Create: `bunchabout/bunchabout/Features/Login/ForgotPasswordView.swift`
+- Create: `bunchabout/bunchaboutTests/LoginViewModelTests.swift`
 
 - [ ] **Step 1: Write LoginViewModel tests**
 
 ```swift
-// gatabout/gataboutTests/LoginViewModelTests.swift
+// bunchabout/bunchaboutTests/LoginViewModelTests.swift
 import Testing
 import Foundation
-@testable import gatabout
+@testable import bunchabout
 
 @Suite(.serialized)
 @MainActor
@@ -1945,7 +1945,7 @@ struct LoginViewModelTests {
 - [ ] **Step 2: Run tests to verify they fail**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:gataboutTests/LoginViewModelTests 2>&1 | tail -20
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:bunchaboutTests/LoginViewModelTests 2>&1 | tail -20
 ```
 
 Expected: Build failure — `LoginViewModel` does not exist yet.
@@ -1953,7 +1953,7 @@ Expected: Build failure — `LoginViewModel` does not exist yet.
 - [ ] **Step 3: Create LoginViewModel.swift**
 
 ```swift
-// gatabout/gatabout/Features/Login/LoginViewModel.swift
+// bunchabout/bunchabout/Features/Login/LoginViewModel.swift
 import Foundation
 
 @Observable
@@ -1993,7 +1993,7 @@ final class LoginViewModel {
 - [ ] **Step 4: Run tests to verify they pass**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:gataboutTests/LoginViewModelTests 2>&1 | tail -20
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:bunchaboutTests/LoginViewModelTests 2>&1 | tail -20
 ```
 
 Expected: All 3 tests PASS.
@@ -2001,7 +2001,7 @@ Expected: All 3 tests PASS.
 - [ ] **Step 5: Create LoginView.swift**
 
 ```swift
-// gatabout/gatabout/Features/Login/LoginView.swift
+// bunchabout/bunchabout/Features/Login/LoginView.swift
 import SwiftUI
 
 struct LoginView: View {
@@ -2022,7 +2022,7 @@ struct LoginView: View {
         VStack(spacing: Sizes.spacing24) {
             Spacer()
 
-            Text("gatabout")
+            Text("bunchabout")
                 .font(.largeTitle.bold())
 
             Text("Find your people, find your plans")
@@ -2097,7 +2097,7 @@ struct LoginView: View {
 - [ ] **Step 6: Create SignUpViewModel.swift**
 
 ```swift
-// gatabout/gatabout/Features/Login/SignUpViewModel.swift
+// bunchabout/bunchabout/Features/Login/SignUpViewModel.swift
 import Foundation
 
 @Observable
@@ -2145,7 +2145,7 @@ final class SignUpViewModel {
 - [ ] **Step 7: Create SignUpView.swift**
 
 ```swift
-// gatabout/gatabout/Features/Login/SignUpView.swift
+// bunchabout/bunchabout/Features/Login/SignUpView.swift
 import SwiftUI
 
 struct SignUpView: View {
@@ -2224,7 +2224,7 @@ struct SignUpView: View {
 - [ ] **Step 8: Create ForgotPasswordViewModel.swift**
 
 ```swift
-// gatabout/gatabout/Features/Login/ForgotPasswordViewModel.swift
+// bunchabout/bunchabout/Features/Login/ForgotPasswordViewModel.swift
 import Foundation
 
 @Observable
@@ -2262,7 +2262,7 @@ final class ForgotPasswordViewModel {
 - [ ] **Step 9: Create ForgotPasswordView.swift**
 
 ```swift
-// gatabout/gatabout/Features/Login/ForgotPasswordView.swift
+// bunchabout/bunchabout/Features/Login/ForgotPasswordView.swift
 import SwiftUI
 
 struct ForgotPasswordView: View {
@@ -2336,7 +2336,7 @@ struct ForgotPasswordView: View {
 - [ ] **Step 10: Run all tests**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | tail -30
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | tail -30
 ```
 
 Expected: All tests PASS (GraphQLClient, ModelDecoding, UserRepository, LoginViewModel).
@@ -2353,12 +2353,12 @@ git commit -m "feat: add login, sign up, and forgot password flows with tests"
 ### Task 10: Location Service
 
 **Files:**
-- Create: `gatabout/gatabout/Core/Location/LocationService.swift`
+- Create: `bunchabout/bunchabout/Core/Location/LocationService.swift`
 
 - [ ] **Step 1: Create LocationService.swift**
 
 ```swift
-// gatabout/gatabout/Core/Location/LocationService.swift
+// bunchabout/bunchabout/Core/Location/LocationService.swift
 import CoreLocation
 
 @Observable
@@ -2425,7 +2425,7 @@ final class LocationService: NSObject, CLLocationManagerDelegate {
 - [ ] **Step 2: Commit**
 
 ```bash
-git add gatabout/gatabout/Core/Location/LocationService.swift
+git add bunchabout/bunchabout/Core/Location/LocationService.swift
 git commit -m "feat: add LocationService with CoreLocation permission handling"
 ```
 
@@ -2434,18 +2434,18 @@ git commit -m "feat: add LocationService with CoreLocation permission handling"
 ### Task 11: Feed Feature
 
 **Files:**
-- Create: `gatabout/gatabout/Features/Feed/FeedViewModel.swift`
-- Create: `gatabout/gatabout/Features/Feed/EventCardView.swift`
-- Create: `gatabout/gatabout/Features/Feed/FeedView.swift`
-- Create: `gatabout/gataboutTests/FeedViewModelTests.swift`
+- Create: `bunchabout/bunchabout/Features/Feed/FeedViewModel.swift`
+- Create: `bunchabout/bunchabout/Features/Feed/EventCardView.swift`
+- Create: `bunchabout/bunchabout/Features/Feed/FeedView.swift`
+- Create: `bunchabout/bunchaboutTests/FeedViewModelTests.swift`
 
 - [ ] **Step 1: Write FeedViewModel tests**
 
 ```swift
-// gatabout/gataboutTests/FeedViewModelTests.swift
+// bunchabout/bunchaboutTests/FeedViewModelTests.swift
 import Testing
 import Foundation
-@testable import gatabout
+@testable import bunchabout
 
 private let feedJSON = """
 {
@@ -2510,7 +2510,7 @@ struct FeedViewModelTests {
 - [ ] **Step 2: Run tests to verify they fail**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:gataboutTests/FeedViewModelTests 2>&1 | tail -20
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:bunchaboutTests/FeedViewModelTests 2>&1 | tail -20
 ```
 
 Expected: Build failure — `FeedViewModel` does not exist yet.
@@ -2518,7 +2518,7 @@ Expected: Build failure — `FeedViewModel` does not exist yet.
 - [ ] **Step 3: Create FeedViewModel.swift**
 
 ```swift
-// gatabout/gatabout/Features/Feed/FeedViewModel.swift
+// bunchabout/bunchabout/Features/Feed/FeedViewModel.swift
 import Foundation
 import CoreLocation
 
@@ -2597,7 +2597,7 @@ final class FeedViewModel {
 - [ ] **Step 4: Run tests to verify they pass**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:gataboutTests/FeedViewModelTests 2>&1 | tail -20
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' -only-testing:bunchaboutTests/FeedViewModelTests 2>&1 | tail -20
 ```
 
 Expected: All 2 tests PASS.
@@ -2605,7 +2605,7 @@ Expected: All 2 tests PASS.
 - [ ] **Step 5: Create EventCardView.swift**
 
 ```swift
-// gatabout/gatabout/Features/Feed/EventCardView.swift
+// bunchabout/bunchabout/Features/Feed/EventCardView.swift
 import SwiftUI
 
 struct EventCardView: View {
@@ -2663,7 +2663,7 @@ struct EventCardView: View {
 - [ ] **Step 6: Create FeedView.swift**
 
 ```swift
-// gatabout/gatabout/Features/Feed/FeedView.swift
+// bunchabout/bunchabout/Features/Feed/FeedView.swift
 import SwiftUI
 
 struct FeedView: View {
@@ -2735,7 +2735,7 @@ struct FeedView: View {
         ContentUnavailableView {
             Label("Location Required", systemImage: "location")
         } description: {
-            Text("gatabout needs your location to find events near you.")
+            Text("bunchabout needs your location to find events near you.")
         } actions: {
             Button("Allow Location Access") {
                 viewModel.requestLocationPermission()
@@ -2765,7 +2765,7 @@ struct FeedView: View {
 - [ ] **Step 7: Run all tests**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | tail -30
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | tail -30
 ```
 
 Expected: All tests PASS.
@@ -2782,13 +2782,13 @@ git commit -m "feat: add event feed with location, pagination, and event cards"
 ### Task 12: Event Detail Feature
 
 **Files:**
-- Create: `gatabout/gatabout/Features/EventDetail/EventDetailViewModel.swift`
-- Create: `gatabout/gatabout/Features/EventDetail/EventDetailView.swift`
+- Create: `bunchabout/bunchabout/Features/EventDetail/EventDetailViewModel.swift`
+- Create: `bunchabout/bunchabout/Features/EventDetail/EventDetailView.swift`
 
 - [ ] **Step 1: Create EventDetailViewModel.swift**
 
 ```swift
-// gatabout/gatabout/Features/EventDetail/EventDetailViewModel.swift
+// bunchabout/bunchabout/Features/EventDetail/EventDetailViewModel.swift
 import Foundation
 
 @Observable
@@ -2828,7 +2828,7 @@ final class EventDetailViewModel {
 - [ ] **Step 2: Create EventDetailView.swift**
 
 ```swift
-// gatabout/gatabout/Features/EventDetail/EventDetailView.swift
+// bunchabout/bunchabout/Features/EventDetail/EventDetailView.swift
 import SwiftUI
 
 struct EventDetailView: View {
@@ -2997,7 +2997,7 @@ struct EventDetailView: View {
 - [ ] **Step 3: Build the project**
 
 ```bash
-cd gatabout && xcodebuild build -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | tail -20
+cd bunchabout && xcodebuild build -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | tail -20
 ```
 
 Expected: BUILD SUCCEEDED.
@@ -3005,7 +3005,7 @@ Expected: BUILD SUCCEEDED.
 - [ ] **Step 4: Run all tests**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | tail -30
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | tail -30
 ```
 
 Expected: All tests PASS.
@@ -3024,7 +3024,7 @@ git commit -m "feat: add event detail view with read-only event info and partici
 - [ ] **Step 1: Build and launch on simulator**
 
 ```bash
-cd gatabout && xcodebuild build -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | tail -10
+cd bunchabout && xcodebuild build -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | tail -10
 ```
 
 - [ ] **Step 2: Manual verification checklist**
@@ -3045,7 +3045,7 @@ Open the app in Simulator and verify:
 - [ ] **Step 3: Run full test suite**
 
 ```bash
-cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | grep -E 'Test (Suite|Case|Passed|Failed|session)'
+cd bunchabout && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 16' 2>&1 | grep -E 'Test (Suite|Case|Passed|Failed|session)'
 ```
 
 Expected: All test suites pass.

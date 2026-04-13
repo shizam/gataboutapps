@@ -1,0 +1,453 @@
+<h2>Hero screens — Crisp direction, 4 tabs + FAB</h2>
+<p class="subtitle">Five key surfaces at mobile scale. Flat SF Symbol-style icons, rounded cards, purple accent (#5B3FE5). Click any screen to discuss it, or reply in terminal with specific critiques.</p>
+
+<style>
+  :root {
+    --ink: #0F0F14;
+    --ink2: #2B2B33;
+    --muted: #6B6B73;
+    --muted2: #9A9AA3;
+    --line: #ECECEF;
+    --line2: #F4F4F7;
+    --accent: #5B3FE5;
+    --accent-deep: #4A2FD6;
+    --tint: #F4F1FF;
+    --bg: #F8F8FA;
+    --success: #1F9D55;
+    --warn: #E28A2B;
+    --danger: #DC3545;
+  }
+  .phones5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  @media (max-width: 1100px) { .phones5 { grid-template-columns: repeat(3, 1fr); } }
+
+  .phone-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+  .phone-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.05); }
+
+  .phone { aspect-ratio: 9/19.5; background: var(--bg); position: relative; display: flex; flex-direction: column; overflow: hidden; }
+  .sb { height: 14px; font-size: 9px; color: var(--ink2); display: flex; justify-content: space-between; align-items: center; padding: 4px 14px 0; }
+  .sb .time { font-weight: 600; }
+
+  .hdr { display: flex; align-items: center; justify-content: space-between; padding: 6px 14px 6px; }
+  .hdr h1 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.025em; color: var(--ink); }
+  .hdr .h-actions { display: flex; gap: 4px; }
+  .icon-btn { width: 30px; height: 30px; border-radius: 10px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .icon-btn svg { width: 16px; height: 16px; stroke: var(--ink); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .dot-red { position: absolute; top: 4px; right: 4px; width: 7px; height: 7px; background: #FF4757; border-radius: 50%; border: 2px solid var(--bg); }
+
+  .chiprow { display: flex; gap: 5px; padding: 0 14px 10px; overflow: hidden; }
+  .chip { font-size: 10px; padding: 5px 10px; border-radius: 999px; background: #fff; border: 1px solid var(--line); color: var(--ink2); font-weight: 600; white-space: nowrap; }
+  .chip.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  .scroll { flex: 1; overflow: hidden; padding: 0 14px; }
+  .ev { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 10px 10px 10px; margin-bottom: 8px; display: flex; gap: 9px; align-items: center; }
+  .ev-thumb { width: 42px; height: 42px; border-radius: 10px; background: var(--tint); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .ev-thumb svg { width: 18px; height: 18px; stroke: var(--accent); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .ev-body { flex: 1; min-width: 0; }
+  .ev-body h5 { margin: 0 0 3px; font-size: 11.5px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ev-body .meta { font-size: 9.5px; color: var(--muted); display: flex; gap: 6px; align-items: center; }
+  .ev-body .dot { width: 2px; height: 2px; background: var(--muted2); border-radius: 50%; }
+  .slots { font-size: 9px; font-weight: 600; color: var(--success); background: rgba(31,157,85,0.08); padding: 3px 7px; border-radius: 6px; }
+  .slots.few { color: var(--warn); background: rgba(226,138,43,0.1); }
+  .slots.full { color: var(--muted); background: #F0F0F3; }
+
+  /* Tab bar */
+  .tabbar { margin-top: auto; display: flex; background: #fff; border-top: 1px solid var(--line); height: 56px; align-items: center; justify-content: space-around; padding-bottom: 6px; }
+  .tab { display: flex; flex-direction: column; align-items: center; gap: 3px; flex: 1; }
+  .tab svg { width: 20px; height: 20px; stroke: var(--muted2); stroke-width: 1.7; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .tab span { font-size: 8.5px; font-weight: 600; color: var(--muted2); letter-spacing: 0.01em; }
+  .tab.on svg { stroke: var(--accent); }
+  .tab.on span { color: var(--accent); }
+  .tab.on svg { fill: rgba(91,63,229,0.08); }
+
+  .fab { position: absolute; bottom: 72px; right: 14px; width: 48px; height: 48px; border-radius: 24px; background: var(--accent); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 18px rgba(91,63,229,0.38), 0 2px 4px rgba(91,63,229,0.2); }
+  .fab svg { width: 20px; height: 20px; stroke: #fff; stroke-width: 2.2; fill: none; stroke-linecap: round; }
+
+  /* Event Detail */
+  .hero-img { aspect-ratio: 16/10; background: linear-gradient(135deg, #6E51E8 0%, #A072FF 100%); position: relative; display: flex; align-items: flex-end; padding: 14px; }
+  .hero-img .cat-pill { background: rgba(255,255,255,0.22); backdrop-filter: blur(12px); color: #fff; font-size: 10px; font-weight: 600; padding: 5px 9px; border-radius: 999px; display: inline-flex; align-items: center; gap: 4px; }
+  .hero-img .back { position: absolute; top: 14px; left: 14px; width: 30px; height: 30px; border-radius: 15px; background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; }
+  .hero-img .back svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 2.2; fill: none; }
+  .hero-img .share { position: absolute; top: 14px; right: 14px; width: 30px; height: 30px; border-radius: 15px; background: rgba(255,255,255,0.25); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; }
+  .hero-img .share svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 2.2; fill: none; }
+  .detail-body { padding: 14px; flex: 1; overflow: hidden; }
+  .detail-body h2 { margin: 0 0 4px; font-size: 17px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); line-height: 1.2; }
+  .detail-body .organizer { font-size: 10.5px; color: var(--muted); margin-bottom: 12px; }
+  .detail-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-top: 1px solid var(--line2); font-size: 11px; color: var(--ink2); }
+  .detail-row:first-of-type { border-top: none; }
+  .detail-row .ri { width: 28px; height: 28px; border-radius: 8px; background: var(--tint); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .detail-row .ri svg { width: 13px; height: 13px; stroke: var(--accent); stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .detail-row .rc strong { display: block; font-size: 11px; font-weight: 600; color: var(--ink); margin-bottom: 1px; }
+  .detail-row .rc span { font-size: 10px; color: var(--muted); }
+  .avatars { display: flex; margin-top: 12px; }
+  .av { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #fff; margin-left: -6px; }
+  .av:first-child { margin-left: 0; }
+  .av.a1 { background: linear-gradient(135deg, #FF9068, #F43B47); }
+  .av.a2 { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
+  .av.a3 { background: linear-gradient(135deg, #43E97B, #38F9D7); }
+  .av.a4 { background: linear-gradient(135deg, #FA709A, #FEE140); }
+  .av.more { background: var(--tint); color: var(--accent); font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+  .bottom-bar { background: #fff; border-top: 1px solid var(--line); padding: 10px 14px 14px; display: flex; align-items: center; gap: 10px; }
+  .price { flex: 1; }
+  .price strong { font-size: 13px; color: var(--ink); font-weight: 700; display: block; }
+  .price span { font-size: 10px; color: var(--muted); }
+  .cta { background: var(--ink); color: #fff; font-size: 12px; font-weight: 600; padding: 11px 20px; border-radius: 12px; }
+
+  /* Create Event (wizard) */
+  .wiz-top { padding: 14px; }
+  .wiz-top .step { font-size: 10px; color: var(--muted); font-weight: 600; margin-bottom: 4px; letter-spacing: 0.04em; }
+  .wiz-top h2 { margin: 0 0 12px; font-size: 19px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); line-height: 1.2; }
+  .progress { height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; margin-bottom: 14px; }
+  .progress .bar { height: 100%; width: 50%; background: var(--accent); border-radius: 2px; }
+  .cat-grid { padding: 0 14px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+  .cat-tile { aspect-ratio: 1/1; border: 1px solid var(--line); border-radius: 12px; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+  .cat-tile svg { width: 18px; height: 18px; stroke: var(--ink2); stroke-width: 1.7; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .cat-tile span { font-size: 8.5px; color: var(--ink2); font-weight: 600; }
+  .cat-tile.sel { background: var(--ink); border-color: var(--ink); }
+  .cat-tile.sel svg { stroke: #fff; }
+  .cat-tile.sel span { color: #fff; }
+
+  /* Chat */
+  .chat-list { flex: 1; padding: 0 14px; overflow: hidden; }
+  .chat-row { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line2); align-items: center; }
+  .chat-row:last-child { border-bottom: none; }
+  .chat-av { width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #fff; }
+  .chat-av.g1 { background: linear-gradient(135deg, #667EEA, #764BA2); }
+  .chat-av.g2 { background: linear-gradient(135deg, #F093FB, #F5576C); }
+  .chat-av.g3 { background: linear-gradient(135deg, #4FACFE, #00F2FE); }
+  .chat-av.g4 { background: linear-gradient(135deg, #FA709A, #FEE140); }
+  .chat-body { flex: 1; min-width: 0; }
+  .chat-head { display: flex; justify-content: space-between; align-items: baseline; gap: 6px; }
+  .chat-head h5 { margin: 0; font-size: 12px; font-weight: 600; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chat-head .t { font-size: 9.5px; color: var(--muted); flex-shrink: 0; }
+  .chat-preview { font-size: 10.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px; }
+  .chat-preview.unread { color: var(--ink2); font-weight: 600; }
+  .unread-dot { width: 7px; height: 7px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+  .chat-tab-toggle { display: flex; gap: 4px; padding: 6px 14px 10px; }
+  .cseg { flex: 1; text-align: center; font-size: 11px; font-weight: 600; padding: 7px 0; color: var(--muted); background: var(--line2); border-radius: 8px; }
+  .cseg.on { background: var(--ink); color: #fff; }
+
+  /* Profile */
+  .prof-hero { padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .prof-av { width: 72px; height: 72px; border-radius: 36px; background: linear-gradient(135deg, #667EEA, #A578FF); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 26px; font-weight: 700; }
+  .prof-name { font-size: 17px; font-weight: 700; color: var(--ink); letter-spacing: -0.015em; }
+  .prof-bio { font-size: 10.5px; color: var(--muted); text-align: center; padding: 0 18px; }
+  .prof-stats { display: flex; width: 100%; padding: 10px 14px; gap: 8px; }
+  .stat { flex: 1; background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 9px; text-align: center; }
+  .stat strong { display: block; font-size: 15px; color: var(--ink); font-weight: 700; letter-spacing: -0.01em; }
+  .stat span { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 2px; display: block; }
+  .traits { padding: 0 14px; }
+  .traits h4 { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin: 8px 0 8px; }
+  .trait-chip { display: inline-block; font-size: 10px; padding: 5px 9px; border-radius: 999px; margin: 0 4px 5px 0; font-weight: 600; background: var(--tint); color: var(--accent); }
+  .trait-chip.star { background: linear-gradient(90deg, #FFE08A, #FFB347); color: #5B3A00; }
+  .badges-row { display: flex; gap: 8px; padding: 2px 14px 8px; }
+  .badge-tile { flex: 1; aspect-ratio: 1/1; border-radius: 12px; background: var(--line2); display: flex; align-items: center; justify-content: center; }
+  .badge-tile svg { width: 20px; height: 20px; }
+
+  /* Card body under each phone */
+  .cb { padding: 14px 14px 16px; background: #fff; border-top: 1px solid var(--line); }
+  .cb h3 { margin: 0 0 4px; font-size: 13px; font-weight: 600; color: var(--ink); }
+  .cb p { margin: 0; font-size: 11px; color: var(--muted); line-height: 1.5; }
+</style>
+
+<!-- Reusable SVG defs: declare once via inline symbols -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="ic-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polygon points="16.2,7.8 13.9,13.9 7.8,16.2 10.1,10.1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="ic-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17"/><path d="M8 3v4M16 3v4"/></symbol>
+    <symbol id="ic-chat" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></symbol>
+    <symbol id="ic-user" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="4"/><path d="M4 21c1.2-3.9 4.3-6 8-6s6.8 2.1 8 6"/></symbol>
+    <symbol id="ic-bell" viewBox="0 0 24 24"><path d="M18 16v-5a6 6 0 1 0-12 0v5l-1.5 2h15L18 16z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="ic-map" viewBox="0 0 24 24"><polygon points="3,6 9,3 15,6 21,3 21,18 15,21 9,18 3,21"/><line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/></symbol>
+    <symbol id="ic-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+    <symbol id="ic-filter" viewBox="0 0 24 24"><polygon points="3,5 21,5 14,13 14,20 10,18 10,13"/></symbol>
+    <symbol id="ic-back" viewBox="0 0 24 24"><polyline points="15,5 7,12 15,19"/></symbol>
+    <symbol id="ic-share" viewBox="0 0 24 24"><path d="M12 3v13"/><polyline points="7,8 12,3 17,8"/><path d="M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></symbol>
+    <symbol id="ic-pin" viewBox="0 0 24 24"><path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></symbol>
+    <symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polyline points="12,7 12,12 16,14"/></symbol>
+    <symbol id="ic-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20c.8-3 3.2-5 6-5s5.2 2 6 5"/><path d="M15 20c.5-2 2-3.2 4-3.5"/></symbol>
+    <symbol id="ic-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 1 1 8 0v3"/></symbol>
+    <symbol id="ic-fork" viewBox="0 0 24 24"><path d="M8 3v7a3 3 0 0 0 6 0V3"/><line x1="11" y1="10" x2="11" y2="21"/></symbol>
+    <symbol id="ic-ball" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M4 10c4 2 12 2 16 0"/><path d="M8 20c1-4 1-8 0-12"/><path d="M16 20c-1-4-1-8 0-12"/></symbol>
+    <symbol id="ic-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1" fill="currentColor" stroke="none"/><circle cx="9" cy="15" r="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="ic-music" viewBox="0 0 24 24"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></symbol>
+    <symbol id="ic-cam" viewBox="0 0 24 24"><path d="M4 8h4l2-2h4l2 2h4v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+    <symbol id="ic-coffee" viewBox="0 0 24 24"><path d="M4 8h13v6a5 5 0 0 1-10 0V8"/><path d="M17 10h2a2 2 0 0 1 0 4h-2"/><line x1="7" y1="3" x2="7" y2="5"/><line x1="11" y1="3" x2="11" y2="5"/></symbol>
+    <symbol id="ic-hike" viewBox="0 0 24 24"><path d="M3 20l7-11 4 5 3-4 4 10z"/><circle cx="14" cy="5" r="2"/></symbol>
+    <symbol id="ic-send" viewBox="0 0 24 24"><path d="M3 11l18-8-8 18-2-8z"/></symbol>
+  </defs>
+</svg>
+
+<div class="cards phones5">
+
+  <!-- 1. DISCOVER / FEED -->
+  <div class="card phone-card" data-choice="feed" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="sb"><span class="time">9:41</span><span>•••</span></div>
+      <div class="hdr">
+        <h1>Discover</h1>
+        <div class="h-actions">
+          <div class="icon-btn"><svg><use href="#ic-map"/></svg></div>
+          <div class="icon-btn"><svg><use href="#ic-bell"/></svg><span class="dot-red"></span></div>
+        </div>
+      </div>
+      <div class="chiprow">
+        <span class="chip on">All</span>
+        <span class="chip">Dining</span>
+        <span class="chip">Sports</span>
+        <span class="chip">Games</span>
+        <span class="chip">More</span>
+      </div>
+      <div class="scroll">
+        <div class="ev">
+          <div class="ev-thumb"><svg><use href="#ic-fork"/></svg></div>
+          <div class="ev-body">
+            <h5>Ramen at Ippudo</h5>
+            <div class="meta">Thu 7pm<span class="dot"></span>0.4 mi</div>
+          </div>
+          <span class="slots">2 open</span>
+        </div>
+        <div class="ev">
+          <div class="ev-thumb"><svg><use href="#ic-ball"/></svg></div>
+          <div class="ev-body">
+            <h5>Pickup soccer at GG Park</h5>
+            <div class="meta">Sat 10am<span class="dot"></span>1.2 mi</div>
+          </div>
+          <span class="slots few">1 open</span>
+        </div>
+        <div class="ev">
+          <div class="ev-thumb"><svg><use href="#ic-dice"/></svg></div>
+          <div class="ev-body">
+            <h5>Board game night</h5>
+            <div class="meta">Wed 7pm<span class="dot"></span>0.8 mi</div>
+          </div>
+          <span class="slots">3 open</span>
+        </div>
+        <div class="ev">
+          <div class="ev-thumb"><svg><use href="#ic-coffee"/></svg></div>
+          <div class="ev-body">
+            <h5>Morning coffee crawl</h5>
+            <div class="meta">Sun 9am<span class="dot"></span>0.6 mi</div>
+          </div>
+          <span class="slots">4 open</span>
+        </div>
+        <div class="ev">
+          <div class="ev-thumb"><svg><use href="#ic-hike"/></svg></div>
+          <div class="ev-body">
+            <h5>Bernal Hill sunset hike</h5>
+            <div class="meta">Sun 6pm<span class="dot"></span>2.1 mi</div>
+          </div>
+          <span class="slots full">Full</span>
+        </div>
+      </div>
+      <div class="fab"><svg><use href="#ic-plus"/></svg></div>
+      <div class="tabbar">
+        <div class="tab on"><svg><use href="#ic-compass"/></svg><span>Discover</span></div>
+        <div class="tab"><svg><use href="#ic-calendar"/></svg><span>Events</span></div>
+        <div class="tab"><svg><use href="#ic-chat"/></svg><span>Chat</span></div>
+        <div class="tab"><svg><use href="#ic-user"/></svg><span>Profile</span></div>
+      </div>
+    </div>
+    <div class="cb">
+      <h3>Discover (feed)</h3>
+      <p>Compact list. Category chips, map toggle + bell in header. FAB for Create. Slot pill signals urgency.</p>
+    </div>
+  </div>
+
+  <!-- 2. EVENT DETAIL -->
+  <div class="card phone-card" data-choice="detail" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="sb"><span class="time">9:41</span><span>•••</span></div>
+      <div class="hero-img">
+        <div class="back"><svg><use href="#ic-back"/></svg></div>
+        <div class="share"><svg><use href="#ic-share"/></svg></div>
+        <span class="cat-pill">🍜 Dining</span>
+      </div>
+      <div class="detail-body">
+        <h2>Ramen night at Ippudo</h2>
+        <div class="organizer">Hosted by Alex K.</div>
+        <div class="detail-row">
+          <div class="ri"><svg><use href="#ic-clock"/></svg></div>
+          <div class="rc"><strong>Thu, Apr 16 · 7:00 PM</strong><span>~2 hrs</span></div>
+        </div>
+        <div class="detail-row">
+          <div class="ri"><svg><use href="#ic-pin"/></svg></div>
+          <div class="rc"><strong>Ippudo Union Square</strong><span>536 Sutter St · 0.4 mi</span></div>
+        </div>
+        <div class="detail-row">
+          <div class="ri"><svg><use href="#ic-users"/></svg></div>
+          <div class="rc"><strong>4 slots · 2 confirmed</strong><span>Approval required</span></div>
+        </div>
+        <div class="avatars">
+          <div class="av a1"></div>
+          <div class="av a2"></div>
+          <div class="av more">+2</div>
+        </div>
+      </div>
+      <div class="bottom-bar">
+        <div class="price"><strong>2 of 4 slots open</strong><span>Request to join</span></div>
+        <div class="cta">Request</div>
+      </div>
+    </div>
+    <div class="cb">
+      <h3>Event detail</h3>
+      <p>Gradient hero (or venue photo), iconed rows for when/where/who, sticky CTA. Approval-required vs FCFS label makes request behavior clear.</p>
+    </div>
+  </div>
+
+  <!-- 3. CREATE EVENT WIZARD -->
+  <div class="card phone-card" data-choice="create" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="sb"><span class="time">9:41</span><span>•••</span></div>
+      <div class="hdr">
+        <div class="icon-btn"><svg><use href="#ic-back"/></svg></div>
+        <div style="font-size: 11px; font-weight: 600; color: var(--muted);">Step 2 of 4</div>
+        <div class="icon-btn" style="opacity:0"></div>
+      </div>
+      <div class="wiz-top">
+        <div class="progress"><div class="bar"></div></div>
+        <div class="step">CATEGORY</div>
+        <h2>What kind of event?</h2>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-tile sel"><svg><use href="#ic-fork"/></svg><span>Dining</span></div>
+        <div class="cat-tile"><svg><use href="#ic-coffee"/></svg><span>Coffee</span></div>
+        <div class="cat-tile"><svg><use href="#ic-ball"/></svg><span>Sports</span></div>
+        <div class="cat-tile"><svg><use href="#ic-hike"/></svg><span>Outdoors</span></div>
+        <div class="cat-tile"><svg><use href="#ic-dice"/></svg><span>Games</span></div>
+        <div class="cat-tile"><svg><use href="#ic-music"/></svg><span>Music</span></div>
+        <div class="cat-tile"><svg><use href="#ic-cam"/></svg><span>Photo</span></div>
+        <div class="cat-tile"><svg><use href="#ic-coffee"/></svg><span>Drinks</span></div>
+        <div class="cat-tile"><svg><use href="#ic-users"/></svg><span>Social</span></div>
+      </div>
+      <div style="flex:1"></div>
+      <div class="bottom-bar">
+        <div class="price"><strong>Dining</strong><span>Next: Details</span></div>
+        <div class="cta">Continue</div>
+      </div>
+    </div>
+    <div class="cb">
+      <h3>Create event (wizard)</h3>
+      <p>Four steps: Category → Details → Slots & filters → Venue. Progress bar + step label. Sticky Continue CTA keeps momentum.</p>
+    </div>
+  </div>
+
+  <!-- 4. CHAT LIST -->
+  <div class="card phone-card" data-choice="chat" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="sb"><span class="time">9:41</span><span>•••</span></div>
+      <div class="hdr">
+        <h1>Chats</h1>
+        <div class="h-actions">
+          <div class="icon-btn"><svg><use href="#ic-plus"/></svg></div>
+        </div>
+      </div>
+      <div class="chat-tab-toggle">
+        <div class="cseg on">Events</div>
+        <div class="cseg">Direct</div>
+      </div>
+      <div class="chat-list">
+        <div class="chat-row">
+          <div class="chat-av g1"><svg style="width:16px;height:16px;stroke:#fff;stroke-width:1.8;fill:none"><use href="#ic-fork"/></svg></div>
+          <div class="chat-body">
+            <div class="chat-head"><h5>Ramen at Ippudo</h5><span class="t">2m</span></div>
+            <div class="chat-preview unread">Alex: running 5 min late 🏃</div>
+          </div>
+          <span class="unread-dot"></span>
+        </div>
+        <div class="chat-row">
+          <div class="chat-av g2"><svg style="width:16px;height:16px;stroke:#fff;stroke-width:1.8;fill:none"><use href="#ic-ball"/></svg></div>
+          <div class="chat-body">
+            <div class="chat-head"><h5>Soccer pickup – GG Park</h5><span class="t">1h</span></div>
+            <div class="chat-preview">Maya: who's bringing cleats?</div>
+          </div>
+        </div>
+        <div class="chat-row">
+          <div class="chat-av g3"><svg style="width:16px;height:16px;stroke:#fff;stroke-width:1.8;fill:none"><use href="#ic-dice"/></svg></div>
+          <div class="chat-body">
+            <div class="chat-head"><h5>Board game night</h5><span class="t">3h</span></div>
+            <div class="chat-preview">You: sounds good, see you Wed</div>
+          </div>
+        </div>
+        <div class="chat-row">
+          <div class="chat-av g4"><svg style="width:16px;height:16px;stroke:#fff;stroke-width:1.8;fill:none"><use href="#ic-coffee"/></svg></div>
+          <div class="chat-body">
+            <div class="chat-head"><h5>Coffee crawl Sun</h5><span class="t">Yesterday</span></div>
+            <div class="chat-preview">Sam: added two new cafes</div>
+          </div>
+        </div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><svg><use href="#ic-compass"/></svg><span>Discover</span></div>
+        <div class="tab"><svg><use href="#ic-calendar"/></svg><span>Events</span></div>
+        <div class="tab on"><svg><use href="#ic-chat"/></svg><span>Chat</span></div>
+        <div class="tab"><svg><use href="#ic-user"/></svg><span>Profile</span></div>
+      </div>
+    </div>
+    <div class="cb">
+      <h3>Chat list</h3>
+      <p>Segmented toggle between event chats and DMs. Event avatars reuse category icon. Unread dot in accent color.</p>
+    </div>
+  </div>
+
+  <!-- 5. PROFILE -->
+  <div class="card phone-card" data-choice="profile" onclick="toggleSelect(this)">
+    <div class="phone">
+      <div class="sb"><span class="time">9:41</span><span>•••</span></div>
+      <div class="hdr">
+        <h1>Profile</h1>
+        <div class="h-actions">
+          <div class="icon-btn"><svg><use href="#ic-filter"/></svg></div>
+        </div>
+      </div>
+      <div class="prof-hero">
+        <div class="prof-av">SN</div>
+        <div class="prof-name">Sam Nichols</div>
+        <div class="prof-bio">Board games, ramen, long hikes. Usually late.</div>
+      </div>
+      <div class="prof-stats">
+        <div class="stat"><strong>24</strong><span>Events</span></div>
+        <div class="stat"><strong>12</strong><span>Friends</span></div>
+        <div class="stat"><strong>4.8</strong><span>Rating</span></div>
+      </div>
+      <div class="traits">
+        <h4>Traits</h4>
+        <span class="trait-chip star">⭐ Reliable</span>
+        <span class="trait-chip star">⭐ Great host</span>
+        <span class="trait-chip">Fun energy</span>
+        <span class="trait-chip">On time</span>
+        <span class="trait-chip">Good listener</span>
+      </div>
+      <div class="traits" style="margin-top: 4px;">
+        <h4>Badges</h4>
+      </div>
+      <div class="badges-row">
+        <div class="badge-tile" style="background:linear-gradient(135deg,#FFE08A,#FFB347)"><svg viewBox="0 0 24 24" style="stroke:#fff;stroke-width:1.8;fill:none"><polygon points="12,3 14.5,9 21,9.5 16,14 17.5,20 12,17 6.5,20 8,14 3,9.5 9.5,9" stroke-linejoin="round"/></svg></div>
+        <div class="badge-tile" style="background:linear-gradient(135deg,#A0E9FF,#667EEA)"><svg viewBox="0 0 24 24" style="stroke:#fff;stroke-width:1.8;fill:none"><use href="#ic-users"/></svg></div>
+        <div class="badge-tile" style="background:linear-gradient(135deg,#FFB6D9,#F5576C)"><svg viewBox="0 0 24 24" style="stroke:#fff;stroke-width:1.8;fill:none"><use href="#ic-fork"/></svg></div>
+        <div class="badge-tile"><svg viewBox="0 0 24 24" style="stroke:#C4C4CC;stroke-width:1.5;fill:none"><use href="#ic-lock"/></svg></div>
+      </div>
+      <div style="flex:1"></div>
+      <div class="tabbar">
+        <div class="tab"><svg><use href="#ic-compass"/></svg><span>Discover</span></div>
+        <div class="tab"><svg><use href="#ic-calendar"/></svg><span>Events</span></div>
+        <div class="tab"><svg><use href="#ic-chat"/></svg><span>Chat</span></div>
+        <div class="tab on"><svg><use href="#ic-user"/></svg><span>Profile</span></div>
+      </div>
+    </div>
+    <div class="cb">
+      <h3>Profile</h3>
+      <p>Avatar + bio, stats row, prominent traits (★ = prominent tier), 25 possible badges shown as a grid with locked tiles for unearned. Friends live inside, not as separate tab.</p>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top: 22px; padding: 14px 18px; background: #F7F7F9; border-radius: 12px; font-size: 13px; color: #444; line-height: 1.55;">
+  <strong>Things worth debating:</strong>
+  <ul style="margin: 8px 0 0; padding-left: 20px;">
+    <li><strong>Event card density:</strong> compact list (shown) vs tall image cards. Compact = more at a glance; tall = more emotional pull.</li>
+    <li><strong>Event hero:</strong> gradient + category (shown) vs venue photo from Places. Venue photo is warmer but needs a fallback.</li>
+    <li><strong>Chat segmented control</strong> vs threading Events + DMs in one list (unified inbox, Airbnb-style).</li>
+    <li><strong>Notifications:</strong> bell dropdown vs dedicated screen. Dropdown keeps you on-context but limits layout.</li>
+  </ul>
+</div>

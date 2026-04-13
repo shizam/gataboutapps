@@ -11,7 +11,7 @@ xcuserdata/
 .swiftpm/
 
 # CocoaPods
-ios/gatabout/Pods/
+ios/Pods/
 
 # Build artifacts
 build/

@@ -4,11 +4,11 @@ Read `docs/PROJECT-STATUS.md` before doing anything. It has the full architectur
 
 ## Project
 
-- iOS app for the lfourg (gatabout) social coordination platform
-- Contract/spec: `../lfourg/contract/`
-- Must use `gatabout/gatabout.xcworkspace` (CocoaPods), NOT `.xcodeproj`
-- Build: `cd gatabout && xcodebuild build -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 17'`
-- Tests: `cd gatabout && xcodebuild test -workspace gatabout.xcworkspace -scheme gatabout -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:gataboutTests -disable-concurrent-destination-testing`
+- iOS app for the bunchabout social coordination platform
+- Contract/spec: `../bunchabout/contract/`
+- Must use `ios/bunchabout.xcworkspace` (CocoaPods), NOT `.xcodeproj`
+- Build: `cd ios && xcodebuild build -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 17'`
+- Tests: `cd ios && xcodebuild test -workspace bunchabout.xcworkspace -scheme bunchabout -destination 'platform=iOS Simulator,name=iPhone 17' -only-testing:bunchaboutTests -disable-concurrent-destination-testing`
 
 ## Code Style
 
